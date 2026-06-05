@@ -72,6 +72,7 @@
   .gm-ti{color:#aab;font-size:17px;min-width:26px;text-align:right;white-space:nowrap}
   .gm-sp{width:6px}
   .gm-ch{color:#aab;font-size:15px;font-weight:500;min-width:22px;text-align:right}
+@media print { body { zoom: 1 !important; } }
 </style>
 </head>
 <body>
@@ -327,6 +328,18 @@ document.querySelector('style').textContent+=`
 .grp-team .nm{font-size:${SZ.grpNmF}px!important}
 .title-bar{padding-left:${SZ.titlePL}px!important}
 `;
+// Auto-fit to browser viewport width
+(function(){
+  const scale = window.innerWidth / SZ.w;
+  if (scale < 1) {
+    document.body.style.zoom = scale;
+  }
+  window.addEventListener('resize', function(){
+    const s = window.innerWidth / SZ.w;
+    document.body.style.zoom = s < 1 ? s : 1;
+  });
+})();
+
 let tW=0;
 // Scan converted matches to find actual group stage date range
 let gsMinDate=9999,gsMaxDate=0;
