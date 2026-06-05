@@ -40,7 +40,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .preview-wrap{max-width:1200px;margin:0 auto 30px;padding:0 20px}
 .preview-label{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:8px}
 .preview-box{position:relative;width:100%;padding-top:0;background:var(--card);border-radius:8px;border:1px solid var(--card-border);overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.4)}
-.preview-box iframe{position:absolute;top:0;left:0;width:3300px;height:2512px;border:none;transform-origin:0 0}
+.preview-box iframe{position:absolute;top:0;left:0;width:var(--pw,3300px);height:var(--ph,2512px);border:none;transform-origin:0 0}
 .preview-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-dim);pointer-events:none;background:rgba(10,12,24,0.7);transition:opacity 0.3s}
 .preview-overlay.hidden{opacity:0}
 
@@ -114,7 +114,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       <label>Paper Size</label>
       <select id="sel-size" onchange="update()">
         <option value="22x17">22 × 17″ (Tabloid landscape)</option>
-        <option value="24x16" disabled>24 × 16″ — coming soon</option>
+        <option value="24x16">24 × 16″ (3:2 poster)</option>
         <option value="24x36" disabled>24 × 36″ — coming soon</option>
       </select>
     </div>
@@ -164,7 +164,7 @@ function getParams() {
 }
 
 function buildURL(p) {
-  return `poster.html?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}`;
+  return `poster.html?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}&size=${p.size}`;
 }
 
 function update() {
@@ -218,9 +218,13 @@ function scalePreview() {
   const box = document.querySelector('.preview-box');
   const iframe = document.getElementById('preview');
   if (!box || !iframe) return;
-  const scale = box.offsetWidth / 3300;
+  const sizeW = {'22x17':3300,'24x16':3768,'24x36':3768}[getParams().size] || 3300;
+  const sizeH = {'22x17':2512,'24x16':2512,'24x36':5652}[getParams().size] || 2512;
+  const scale = box.offsetWidth / sizeW;
+  iframe.style.width = sizeW + 'px';
+  iframe.style.height = sizeH + 'px';
   iframe.style.transform = 'scale(' + scale + ')';
-  box.style.height = Math.round(2512 * scale) + 'px';
+  box.style.height = Math.round(sizeH * scale) + 'px';
 }
 window.addEventListener('resize', scalePreview);
 

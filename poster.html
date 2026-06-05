@@ -117,17 +117,12 @@ const TZ_TV_MODE={
   'UTC+6':'none','UTC+7':'none','UTC+8':'none','UTC+9':'none','UTC+10':'none','UTC+11':'none',
   'UTC+12':'none','UTC+13':'none'
 };
-const TZ_DATE_FMT={
-  ET:'us',CT:'us',MT:'us',PT:'us',BST:'uk',
-  'UTC-11':'us','UTC-10':'us','UTC-9':'us','UTC-8':'us','UTC-7':'us','UTC-6':'uk',
-  'UTC-5':'uk','UTC-4':'uk','UTC-3':'uk','UTC-2':'uk','UTC-1':'uk','UTC+0':'uk',
-  'UTC+1':'uk','UTC+2':'uk','UTC+3':'uk','UTC+4':'uk','UTC+5':'uk','UTC+5:30':'uk',
-  'UTC+6':'uk','UTC+7':'uk','UTC+8':'uk','UTC+9':'uk','UTC+10':'uk','UTC+11':'uk',
-  'UTC+12':'uk','UTC+13':'uk'
-};
+const TZ_DATE_FMT={ET:'us',CT:'us',MT:'us',PT:'us'};
+// Everyone except the US uses DD/MM — default to 'uk' for all others
+const dateFmtDefault='uk';
 const offset=TZ_OFF[TZ]||0;
 const tvMode=TZ_TV_MODE[TZ]||'us';
-const dateFmt=TZ_DATE_FMT[TZ]||'us';
+const dateFmt=TZ_DATE_FMT[TZ]||dateFmtDefault;
 
 // UK BBC/ITV mapping (group stage only)
 const UK_TV={1:'ITV',2:'ITV',3:'BBC',4:'BBC',5:'ITV',6:'BBC',7:'BBC',8:'ITV',9:'ITV',10:'ITV',11:'BBC',12:'ITV',13:'ITV',14:'BBC',15:'ITV',16:'BBC',17:'BBC',18:'BBC',19:'ITV',20:'BBC',21:'BBC',22:'ITV',23:'ITV',24:'BBC',25:'BBC',26:'ITV',27:'ITV',28:'BBC',29:'BBC',30:'ITV',31:'ITV',32:'ITV',33:'BBC',34:'ITV',35:'BBC',36:'BBC',37:'BBC',38:'ITV',39:'BBC',40:'ITV',41:'BBC',42:'BBC',43:'ITV',44:'ITV',45:'ITV',46:'BBC',47:'BBC',48:'ITV',49:'ITV',50:'ITV',51:'BBC',52:'BBC',53:'BBC',54:'BBC',55:'BBC',56:'BBC',57:'BBC',58:'BBC',59:'ITV',60:'ITV',61:'ITV',62:'ITV',63:'ITV',64:'ITV',65:'BBC',66:'BBC',67:'ITV',68:'ITV',69:'BBC',70:'BBC',71:'BBC',72:'BBC'};
