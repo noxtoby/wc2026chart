@@ -120,6 +120,7 @@ const TZ_TV_MODE={
 const TZ_DATE_FMT={ET:'us',CT:'us',MT:'us',PT:'us'};
 // Everyone except the US uses DD/MM — default to 'uk' for all others
 const dateFmtDefault='uk';
+const SIZE=params.get('size')||'22x17';
 const offset=TZ_OFF[TZ]||0;
 const tvMode=TZ_TV_MODE[TZ]||'us';
 const dateFmt=TZ_DATE_FMT[TZ]||dateFmtDefault;
@@ -250,6 +251,7 @@ body{background-color:${P.bodyBg}!important;color:${P.textMain}!important}
 const root=document.documentElement.style;
 root.setProperty('color',P.textMain);
 
+
 // Title bar will be populated after M array scan
 
 const V=[{id:'VAN',city:'Vancouver',stad:'BC Place',co:'ca'},{id:'TOR',city:'Toronto',stad:'BMO Field',co:'ca'},{id:'MEX',city:'Mexico City',stad:'Estadio Azteca',co:'mx'},{id:'MTY',city:'Monterrey',stad:'Estadio BBVA',co:'mx'},{id:'GDL',city:'Guadalajara',stad:'Estadio Akron',co:'mx'},{id:'SFO',city:'San Francisco',stad:"Levi's Stadium",co:'us'},{id:'HOU',city:'Houston',stad:'NRG Stadium',co:'us'},{id:'PHI',city:'Philadelphia',stad:'Lincoln Financial Field',co:'us'},{id:'SEA',city:'Seattle',stad:'Lumen Field',co:'us'},{id:'BOS',city:'Boston',stad:'Gillette Stadium',co:'us'},{id:'KCM',city:'Kansas City',stad:'Arrowhead Stadium',co:'us'},{id:'LAX',city:'Los Angeles',stad:'SoFi Stadium',co:'us'},{id:'DAL',city:'Dallas',stad:'AT&T Stadium',co:'us'},{id:'ATL',city:'Atlanta',stad:'Mercedes-Benz Stadium',co:'us'},{id:'MIA',city:'Miami',stad:'Hard Rock Stadium',co:'us'},{id:'NYC',city:'New York / NJ',stad:'MetLife Stadium',co:'us'}];
@@ -308,7 +310,22 @@ if(tvMode==='uk'){
 
 const mL={};M.forEach(m=>{const k=m[6]+'_'+m[1];if(!mL[k])mL[k]=[];mL[k].push(m)});
 const mDays=new Set();M.forEach(m=>mDays.add(m[1]));
-const VW=263,GW=3300-VW,grpH=514;
+const SIZES={
+  '22x17':{w:3300,h:2512,vw:263,grpH:514,cityF:32,stadF:20,grpNmF:22,grpAbF:26,cellGS:176,cellKO:260,cellGSo:38,cellKOo:80,titlePL:100,koSmall:true},
+  '24x16':{w:3768,h:2512,vw:276,grpH:514,cityF:34,stadF:22,grpNmF:24,grpAbF:28,cellGS:166,cellKO:246,cellGSo:33,cellKOo:73,titlePL:285,koSmall:false}
+};
+const SZ=SIZES[SIZE]||SIZES['22x17'];
+document.body.style.width=SZ.w+'px';
+document.body.style.height=SZ.h+'px';
+const VW=SZ.vw,GW=SZ.w-VW,grpH=SZ.grpH;
+// Size-dependent styles
+document.querySelector('style').textContent+=`
+.v-city{font-size:${SZ.cityF}px!important}
+.v-stad{font-size:${SZ.stadF}px!important}
+.grp-team .ab{font-size:${SZ.grpAbF}px!important}
+.grp-team .nm{font-size:${SZ.grpNmF}px!important}
+.title-bar{padding-left:${SZ.titlePL}px!important}
+`;
 let tW=0;
 // Scan converted matches to find actual group stage date range
 let gsMinDate=9999,gsMaxDate=0;
@@ -350,7 +367,7 @@ function cellBg(co,ev){
   return ev?P.strDef[0]:P.strDef[1];
 }
 const hdrE=P.hdrE,hdrO=P.hdrO;
-const KOL={R32:'ROUND<span style="font-size:60%;margin:0 0px">OF</span><span style="font-size:24px">32</span>',R16:'ROUND<span style="font-size:60%;margin:0 0px">OF</span><span style="font-size:24px">16</span>',QF:'<span style="font-size:20px">QUARTERS</span>',SF:'<span style="font-size:20px">SEMIFINAL</span>','3RD':'3RD PLACE',FIN:'🏆 FINAL'};
+const KOL=SZ.koSmall?{R32:'ROUND<span style="font-size:60%;margin:0 0px">OF</span><span style="font-size:24px">32</span>',R16:'ROUND<span style="font-size:60%;margin:0 0px">OF</span><span style="font-size:24px">16</span>',QF:'<span style="font-size:20px">QUARTERS</span>',SF:'<span style="font-size:20px">SEMIFINAL</span>','3RD':'3RD PLACE',FIN:'🏆 FINAL'}:{R32:'ROUND OF <span style="font-size:24px">32</span>',R16:'ROUND OF <span style="font-size:24px">16</span>',QF:'<span style="font-size:20px">QUARTERS</span>',SF:'<span style="font-size:20px">SEMIFINAL</span>','3RD':'3RD PLACE',FIN:'🏆 FINAL'};
 
 const ga=document.getElementById('grid-area'),vc=document.getElementById('venue-col');
 ga.style.left=VW+'px';vc.style.width=VW+'px';
@@ -449,8 +466,8 @@ V.forEach(v=>{
         const isKO=['R32','R16','QF','SF','3RD','FIN'].includes(grp);
         const colPx=dW[di];
         let oP,wP;
-        if(isKO){const tw=Math.min(colPx*2.6,140);wP=Math.round(tw/colPx*100);oP=Math.round((wP-100)/2);}
-        else{oP=38;wP=176;}
+        if(isKO){const tw=Math.min(colPx*SZ.cellKO/100,140);wP=Math.round(tw/colPx*100);oP=Math.round((wP-100)/2);}
+        else{oP=SZ.cellGSo;wP=SZ.cellGS;}
         const flankW=(oP/wP*100).toFixed(1)+'%';
         const edgeL=flankW,edgeR=((oP+100)/wP*100).toFixed(1)+'%';
         const tD=(time.includes(':')&&chan)?time.replace(/[ap]$/,''):time;
