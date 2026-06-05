@@ -113,7 +113,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="config-group">
       <label>Paper Size</label>
       <select id="sel-size" onchange="update()">
-        <option value="22x17">22 × 17″ (Tabloid landscape)</option>
+        <option value="22x17">22 × 17″ (Landscape)</option>
+        <option value="A3">A3 Landscape (420×297mm)</option>
         <option value="24x16">24 × 16″ (3:2 poster)</option>
         <option value="24x36" disabled>24 × 36″ — coming soon</option>
       </select>
@@ -144,10 +145,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 
 <div class="how-to">
   <h2>How to Print</h2>
-  <p><strong>Option A — Browser print:</strong> Click "Open Poster", then <code>Ctrl+P</code> (or <code>⌘P</code>). Set paper to <strong>Letter (8.5×11")</strong>, orientation <strong>Landscape</strong>, scale to <strong>Fit</strong>, and check <strong>"Background graphics"</strong>.</p>
-  <p><strong>Option B — Print shop:</strong> Download the HTML and send to a local print shop. They can render it at full resolution for large format printing.</p>
-  <p><strong>Direct URL:</strong> You can also link directly to any variant: <code>poster.html?tz=BST&theme=light</code></p>
-</div>
+  <div id="print-instructions"></div>
+  <p><strong>Direct URL:</strong> Link directly to any variant: <code>poster.html?tz=BST&amp;theme=light</code></p></div>
 
 <div class="footer">
   <p>Made with ☕ and 🏆 — free for personal use.</p>
@@ -202,9 +201,21 @@ function update() {
   overlay.textContent = 'Loading preview…';
   iframe.src = url;
   scalePreview();
+  updatePrintInstructions();
   iframe.onload = () => {
     overlay.classList.add('hidden');
   };
+}
+
+function updatePrintInstructions() {
+  const sz = getParams().size;
+  const el = document.getElementById('print-instructions');
+  if (!el) return;
+  if (sz === '22x17') {
+    el.innerHTML = '<p><strong>Home printer:</strong> Click "Open Poster", then Ctrl+P. Set paper to <strong>Letter (8.5x11)</strong>, orientation <strong>Landscape</strong>, scale to <strong>Fit</strong>, and enable <strong>Background graphics</strong>.</p><p><strong>Print shop:</strong> Download the HTML for large format printing at full 22x17 size.</p>';
+  } else {
+    el.innerHTML = '<p><strong>Print shop recommended:</strong> Download the HTML and bring it to a print shop for full-size ' + sz.replace('x', '×') + ' output.</p><p><strong>Home printer:</strong> Click "Open Poster", then Ctrl+P. Scale to fit, landscape, enable Background graphics.</p>';
+  }
 }
 
 function printPoster() {
