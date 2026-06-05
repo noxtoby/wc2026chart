@@ -164,7 +164,7 @@ function getParams() {
 }
 
 function buildURL(p) {
-  return `poster.html?tz=${p.tz}&theme=${p.theme}`;
+  return `poster.html?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}`;
 }
 
 function update() {
