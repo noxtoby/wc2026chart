@@ -6,410 +6,209 @@
 <title>2026 FIFA World Cup Wall Chart — Free Download</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0a0c18;
-  --card: #12152a;
-  --card-border: #1e2248;
-  --gold: #c9a830;
-  --gold-dim: #8a7020;
-  --text: #e8eaf0;
-  --text-dim: #8890aa;
-  --accent-us: #4a80cc;
-  --accent-mx: #2eaa60;
-  --accent-ca: #cc4444;
-  --stripe-1: #161a35;
-  --stripe-2: #1a1f40;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body { 
-  font-family: 'Outfit', sans-serif; 
-  background: var(--bg); 
-  color: var(--text);
-  min-height: 100vh;
-}
+:root{--bg:#0a0c18;--card:#12152a;--card-border:#1e2248;--gold:#c9a830;--text:#e8eaf0;--text-dim:#8890aa;--us:#4a80cc;--mx:#2eaa60;--ca:#cc4444}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-.hero {
-  text-align: center;
-  padding: 60px 20px 40px;
-  background: linear-gradient(180deg, #0e1228 0%, #0a0c18 100%);
-  border-bottom: 2px solid var(--gold);
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(201,168,48,0.03) 80px, rgba(201,168,48,0.03) 81px);
-  pointer-events: none;
-}
-.hero h1 {
-  font-size: clamp(32px, 5vw, 64px);
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  line-height: 1.1;
-  margin-bottom: 8px;
-}
-.hero h1 .year { color: var(--text); }
-.hero h1 .cup { color: var(--gold); }
-.hero .hosts {
-  font-size: clamp(16px, 2.5vw, 28px);
-  font-weight: 600;
-  letter-spacing: 4px;
-  margin-bottom: 16px;
-}
-.hero .hosts .ca { color: var(--accent-ca); }
-.hero .hosts .mx { color: var(--accent-mx); }
-.hero .hosts .us { color: var(--accent-us); }
-.hero .hosts .dot { color: var(--text-dim); }
-.hero .subtitle {
-  font-size: clamp(14px, 1.8vw, 20px);
-  color: var(--text-dim);
-  font-weight: 300;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.5;
-}
+.hero{text-align:center;padding:50px 20px 35px;background:linear-gradient(180deg,#0e1228,#0a0c18);border-bottom:2px solid var(--gold);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(201,168,48,0.03) 80px,rgba(201,168,48,0.03) 81px);pointer-events:none}
+.hero h1{font-size:clamp(28px,5vw,58px);font-weight:900;letter-spacing:3px;text-transform:uppercase;line-height:1.1;margin-bottom:6px}
+.hero h1 .cup{color:var(--gold)}
+.hero .hosts{font-size:clamp(15px,2.5vw,26px);font-weight:600;letter-spacing:4px;margin-bottom:14px}
+.hero .hosts .ca{color:var(--ca)}.hero .hosts .mx{color:var(--mx)}.hero .hosts .us{color:var(--us)}.hero .hosts .dot{color:var(--text-dim)}
+.hero .sub{font-size:clamp(13px,1.6vw,18px);color:var(--text-dim);font-weight:300;max-width:550px;margin:0 auto;line-height:1.5}
 
-.configurator {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-.config-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-}
-.config-group {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 20px;
-}
-.config-group label {
-  display: block;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--gold);
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-.config-group select {
-  width: 100%;
-  padding: 12px 16px;
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--card-border);
-  border-radius: 8px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 15px;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238890aa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-}
-.config-group select:focus {
-  outline: none;
-  border-color: var(--gold);
-}
+.config{max-width:880px;margin:35px auto;padding:0 20px}
+.config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:24px}
+.config-group{background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:18px}
+.config-group label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);font-weight:600;margin-bottom:10px}
+.config-group select{width:100%;padding:11px 14px;background:var(--bg);color:var(--text);border:1px solid var(--card-border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:15px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238890aa' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.config-group select:focus{outline:none;border-color:var(--gold)}
 
-.info-bar {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 16px 24px;
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.info-tag {
-  font-family: 'Space Mono', monospace;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 4px;
-  background: rgba(201,168,48,0.12);
-  color: var(--gold);
-  border: 1px solid rgba(201,168,48,0.2);
-}
-.info-text {
-  font-size: 14px;
-  color: var(--text-dim);
-  flex: 1;
-}
+.info-bar{background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tag{font-family:'Space Mono',monospace;font-size:12px;padding:3px 9px;border-radius:4px;background:rgba(201,168,48,0.12);color:var(--gold);border:1px solid rgba(201,168,48,0.2)}
+.info-text{font-size:14px;color:var(--text-dim);flex:1}
 
-.download-section {
-  text-align: center;
-  margin-bottom: 50px;
-}
-.download-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 40px;
-  background: linear-gradient(135deg, var(--gold) 0%, #d4b040 100%);
-  color: #0a0c18;
-  border: none;
-  border-radius: 10px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: transform 0.15s, box-shadow 0.15s;
-  margin: 8px;
-}
-.download-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(201,168,48,0.3);
-}
-.download-btn.secondary {
-  background: var(--card);
-  color: var(--text);
-  border: 1px solid var(--card-border);
-}
-.download-btn.secondary:hover {
-  border-color: var(--gold);
-  box-shadow: 0 8px 24px rgba(201,168,48,0.15);
-}
+.actions{text-align:center;margin-bottom:30px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border:none;border-radius:9px;font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;letter-spacing:0.5px;cursor:pointer;text-decoration:none;transition:transform 0.15s,box-shadow 0.15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#d4b040);color:#0a0c18;box-shadow:0 4px 16px rgba(201,168,48,0.25)}
+.btn-gold:hover{box-shadow:0 8px 24px rgba(201,168,48,0.35)}
+.btn-outline{background:var(--card);color:var(--text);border:1px solid var(--card-border)}
+.btn-outline:hover{border-color:var(--gold);box-shadow:0 8px 24px rgba(201,168,48,0.15)}
 
-.preview-frame {
-  max-width: 900px;
-  margin: 0 auto 40px;
-  padding: 0 20px;
-}
-.preview-frame img {
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid var(--card-border);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-}
+.preview-wrap{max-width:880px;margin:0 auto 30px;padding:0 20px}
+.preview-label{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:8px}
+.preview-box{position:relative;width:100%;padding-top:56.25%;background:var(--card);border-radius:8px;border:1px solid var(--card-border);overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.preview-box iframe{position:absolute;inset:0;width:100%;height:100%;border:none;transform-origin:0 0}
+.preview-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-dim);pointer-events:none;background:rgba(10,12,24,0.7);transition:opacity 0.3s}
+.preview-overlay.hidden{opacity:0}
 
-.availability {
-  max-width: 900px;
-  margin: 0 auto 60px;
-  padding: 0 20px;
-}
-.availability h2 {
-  font-size: 20px;
-  color: var(--gold);
-  margin-bottom: 20px;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-.avail-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 8px;
-}
-.avail-item {
-  font-family: 'Space Mono', monospace;
-  font-size: 12px;
-  padding: 8px 12px;
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: 6px;
-  color: var(--text-dim);
-}
-.avail-item.ready { border-left: 3px solid var(--accent-mx); color: var(--text); }
-.avail-item.coming { border-left: 3px solid var(--text-dim); opacity: 0.5; }
+.how-to{max-width:880px;margin:0 auto 40px;padding:0 20px}
+.how-to h2{font-size:18px;color:var(--gold);margin-bottom:12px;font-weight:600;letter-spacing:1px}
+.how-to p{color:var(--text-dim);font-size:14px;line-height:1.7;margin-bottom:8px}
+.how-to code{background:var(--card);padding:2px 6px;border-radius:3px;font-family:'Space Mono',monospace;font-size:12px;color:var(--gold)}
 
-.footer {
-  text-align: center;
-  padding: 30px 20px;
-  border-top: 1px solid var(--card-border);
-  color: var(--text-dim);
-  font-size: 13px;
-  line-height: 1.8;
-}
-.footer a { color: var(--gold); text-decoration: none; }
+.footer{text-align:center;padding:25px 20px;border-top:1px solid var(--card-border);color:var(--text-dim);font-size:13px;line-height:1.8}
+.footer a{color:var(--gold);text-decoration:none}
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <h1><span class="year">2026</span> <span class="cup">FIFA World Cup</span></h1>
-  <div class="hosts">
-    <span class="ca">CANADA</span> <span class="dot">•</span> 
-    <span class="mx">MEXICO</span> <span class="dot">•</span> 
-    <span class="us">USA</span>
-  </div>
-  <p class="subtitle">Free printable wall chart — all 104 matches, venues, times, TV channels, knockout bracket, and group details.</p>
+  <h1><span>2026</span> <span class="cup">FIFA World Cup</span></h1>
+  <div class="hosts"><span class="ca">CANADA</span> <span class="dot">•</span> <span class="mx">MEXICO</span> <span class="dot">•</span> <span class="us">USA</span></div>
+  <p class="sub">Free printable wall chart — all 104 matches, venues, times, TV channels, knockout bracket, and group details.</p>
 </div>
 
-<div class="configurator">
+<div class="config">
   <div class="config-grid">
     <div class="config-group">
       <label>Color Scheme</label>
-      <select id="color" onchange="updateSelection()">
+      <select id="sel-theme" onchange="update()">
         <option value="dark">Dark (screen / poster print)</option>
         <option value="light">Light (printer-friendly)</option>
       </select>
     </div>
     <div class="config-group">
-      <label>Paper Size</label>
-      <select id="size" onchange="updateSelection()">
-        <option value="22x17">22×17" (Letter landscape)</option>
-        <option value="24x16">24×16" (3:2 poster)</option>
-        <option value="24x36" disabled>24×36" (vertical poster) — coming soon</option>
-      </select>
-    </div>
-    <div class="config-group">
       <label>Time Zone</label>
-      <select id="tz" onchange="updateSelection()">
+      <select id="sel-tz" onchange="update()">
         <option value="ET">Eastern US (ET)</option>
         <option value="CT">Central US (CT)</option>
         <option value="MT">Mountain US (MT)</option>
         <option value="PT">Pacific US (PT)</option>
         <option value="UTC">UTC</option>
         <option value="BST">UK (BST)</option>
+        <option value="CEST">Central Europe (CEST)</option>
+        <option value="GST">Gulf (GST)</option>
+      </select>
+    </div>
+    <div class="config-group">
+      <label>Paper Size</label>
+      <select id="sel-size" onchange="update()">
+        <option value="22x17">22 × 17″ (Tabloid landscape)</option>
+        <option value="24x16" disabled>24 × 16″ — coming soon</option>
+        <option value="24x36" disabled>24 × 36″ — coming soon</option>
       </select>
     </div>
   </div>
 
-  <div class="info-bar" id="info-bar">
-    <span class="info-tag" id="tag-tv">FOX / FS1</span>
-    <span class="info-tag" id="tag-dpi">300 DPI</span>
-    <span class="info-tag" id="tag-file">PDF + PNG</span>
-    <span class="info-text" id="info-text">US broadcast channels. Print at 31% scale, landscape, with background graphics enabled.</span>
+  <div class="info-bar">
+    <span class="tag" id="tag-tv">FOX / FS1</span>
+    <span class="tag" id="tag-fmt">MM/DD</span>
+    <span class="tag">300 DPI</span>
+    <span class="info-text" id="info-text">US broadcast channels included. Print at 31% scale, landscape orientation, enable background graphics.</span>
   </div>
 </div>
 
-<div class="download-section">
-  <a class="download-btn" id="btn-pdf" href="#" download>
-    ⬇ Download PDF
-  </a>
-  <a class="download-btn secondary" id="btn-png" href="#" download>
-    ⬇ Download PNG
-  </a>
-  <a class="download-btn secondary" id="btn-html" href="#" download>
-    ⬇ Download HTML
-  </a>
+<div class="actions">
+  <a class="btn btn-gold" id="btn-open" href="#" target="_blank">⬇ Open Poster</a>
+  <button class="btn btn-outline" id="btn-print" onclick="printPoster()">🖨 Print</button>
+  <a class="btn btn-outline" id="btn-download" href="#" download>📄 Download HTML</a>
 </div>
 
-<div class="preview-frame" id="preview-frame">
-  <img id="preview-img" src="" alt="World Cup Wall Chart Preview">
+<div class="preview-wrap">
+  <div class="preview-label">Live Preview</div>
+  <div class="preview-box">
+    <iframe id="preview" sandbox="allow-scripts"></iframe>
+    <div class="preview-overlay" id="overlay">Loading preview…</div>
+  </div>
 </div>
 
-<div class="availability">
-  <h2>Available Versions</h2>
-  <div class="avail-grid" id="avail-grid"></div>
+<div class="how-to">
+  <h2>How to Print</h2>
+  <p><strong>Option A — Browser print:</strong> Click "Open Poster", then <code>Ctrl+P</code> (or <code>⌘P</code>). Set paper to <strong>Tabloid (11×17")</strong>, orientation <strong>Landscape</strong>, scale <strong>31%</strong>, and check <strong>"Background graphics"</strong>.</p>
+  <p><strong>Option B — Print shop:</strong> Download the HTML and send to a local print shop. They can render it at full resolution for large format printing.</p>
+  <p><strong>Direct URL:</strong> You can also link directly to any variant: <code>poster.html?tz=BST&theme=light</code></p>
 </div>
 
 <div class="footer">
   <p>Made with ☕ and 🏆 — free for personal use.</p>
-  <p>Data sourced from FIFA, FOX Sports, BBC, ITV. All times verified.</p>
-  <p>Found an error? <a href="https://github.com/YOUR_REPO/issues">Open an issue</a></p>
+  <p>Data from FIFA, FOX Sports, BBC, ITV. All times verified against official schedule.</p>
 </div>
 
 <script>
-const VERSIONS = {
-  'dark-22x17-ET':  { ready: true,  tv: 'FOX / FS1', notes: 'Print: Letter, landscape, 31%' },
-  'dark-22x17-CT':  { ready: true,  tv: 'FOX / FS1', notes: 'Print: Letter, landscape, 31%' },
-  'dark-22x17-MT':  { ready: true,  tv: 'FOX / FS1', notes: 'Print: Letter, landscape, 31%' },
-  'dark-22x17-PT':  { ready: true,  tv: 'FOX / FS1', notes: 'Print: Letter, landscape, 31%' },
-  'dark-22x17-UTC': { ready: true,  tv: 'No TV info', notes: 'Universal time' },
-  'dark-22x17-BST': { ready: true,  tv: 'BBC / ITV',  notes: 'UK broadcast channels, dates in DD/MM' },
-  'dark-24x16-ET':  { ready: true,  tv: 'FOX / FS1', notes: 'Large format poster, 314 DPI' },
-  'dark-24x16-CT':  { ready: true,  tv: 'FOX / FS1', notes: 'Large format poster, 314 DPI' },
-  'light-22x17-ET': { ready: true,  tv: 'FOX / FS1', notes: 'Printer-friendly, minimal ink' },
-  'dark-22x17-GST': { ready: true,  tv: 'No TV info', notes: 'Gulf Standard Time' },
-  'dark-22x17-CEST':{ ready: true,  tv: 'No TV info', notes: 'Central European Summer Time' },
-  // Coming soon
-  'light-22x17-CT': { ready: false },
-  'light-22x17-PT': { ready: false },
-  'light-22x17-BST':{ ready: false },
-  'dark-24x16-PT':  { ready: false },
-  'dark-24x36-ET':  { ready: false },
-};
-
-function getKey() {
-  const c = document.getElementById('color').value;
-  const s = document.getElementById('size').value;
-  const t = document.getElementById('tz').value;
-  return `${c}-${s}-${t}`;
+function getParams() {
+  return {
+    theme: document.getElementById('sel-theme').value,
+    tz: document.getElementById('sel-tz').value,
+    size: document.getElementById('sel-size').value
+  };
 }
 
-function getFilename(key, ext) {
-  const [color, size, tz] = key.split('-');
-  let name = `wc2026_poster_${size}`;
-  if (color === 'light') name += '_light';
-  if (tz !== 'ET') name += `_${tz}`;
-  return `${name}.${ext}`;
+function buildURL(p) {
+  return `poster.html?tz=${p.tz}&theme=${p.theme}`;
 }
 
-function updateSelection() {
-  const key = getKey();
-  const ver = VERSIONS[key];
-  const tz = document.getElementById('tz').value;
+function update() {
+  const p = getParams();
+  const url = buildURL(p);
   
-  // Update TV tag
+  // Update buttons
+  document.getElementById('btn-open').href = url;
+  document.getElementById('btn-download').href = `poster.html`;
+  
+  // Update info bar
   const tvTag = document.getElementById('tag-tv');
-  const infoText = document.getElementById('info-text');
-  if (['ET','CT','MT','PT'].includes(tz)) {
-    tvTag.textContent = 'FOX / FS1';
-    infoText.textContent = 'US broadcast channels. Print at 31% scale, landscape, with background graphics enabled.';
-  } else if (tz === 'BST') {
-    tvTag.textContent = 'BBC / ITV';
-    infoText.textContent = 'UK broadcast channels. Group stage channels confirmed; knockout TBC. Dates in DD/MM format.';
-  } else {
-    tvTag.textContent = 'No TV info';
-    infoText.textContent = 'Times only, no broadcast channel info. Print at 31% scale, landscape.';
-  }
-
-  // Update download buttons
-  const pdfBtn = document.getElementById('btn-pdf');
-  const pngBtn = document.getElementById('btn-png');
-  const htmlBtn = document.getElementById('btn-html');
+  const fmtTag = document.getElementById('tag-fmt');
+  const info = document.getElementById('info-text');
   
-  if (ver && ver.ready) {
-    const base = 'posters/';
-    pdfBtn.href = base + getFilename(key, 'pdf');
-    pngBtn.href = base + getFilename(key, 'png');
-    htmlBtn.href = base + getFilename(key, 'html');
-    pdfBtn.style.opacity = '1';
-    pngBtn.style.opacity = '1';
-    htmlBtn.style.opacity = '1';
-    pdfBtn.style.pointerEvents = 'auto';
+  const usZones = ['ET','CT','MT','PT'];
+  if (usZones.includes(p.tz)) {
+    tvTag.textContent = 'FOX / FS1';
+    fmtTag.textContent = 'MM/DD';
+    info.textContent = 'US broadcast channels included. Print at 31% scale, landscape orientation, enable background graphics.';
+  } else if (p.tz === 'BST') {
+    tvTag.textContent = 'BBC / ITV';
+    fmtTag.textContent = 'DD/MM';
+    info.textContent = 'UK broadcast channels (group stage confirmed, knockout TBC). Dates in DD/MM format.';
   } else {
-    pdfBtn.href = '#';
-    pngBtn.href = '#';
-    htmlBtn.href = '#';
-    pdfBtn.style.opacity = '0.4';
-    pngBtn.style.opacity = '0.4';
-    htmlBtn.style.opacity = '0.4';
-    pdfBtn.style.pointerEvents = 'none';
+    tvTag.textContent = 'Times only';
+    fmtTag.textContent = p.tz === 'CEST' ? 'MM/DD' : 'MM/DD';
+    info.textContent = 'No broadcast channel info. Print at 31% scale, landscape orientation, enable background graphics.';
   }
+  
+  // Update preview iframe
+  const iframe = document.getElementById('preview');
+  const overlay = document.getElementById('overlay');
+  overlay.classList.remove('hidden');
+  overlay.textContent = 'Loading preview…';
+  iframe.src = url;
+  iframe.onload = () => {
+    overlay.classList.add('hidden');
+    // Scale iframe content to fit
+    try {
+      const scale = iframe.offsetWidth / 3300;
+      iframe.style.transform = `scale(${scale})`;
+      iframe.style.width = `${3300}px`;
+      iframe.style.height = `${2512}px`;
+    } catch(e) {}
+  };
+}
 
-  // Update preview
-  const img = document.getElementById('preview-img');
-  if (ver && ver.ready) {
-    img.src = 'posters/' + getFilename(key, 'png');
-    img.style.display = 'block';
-  } else {
-    img.style.display = 'none';
+function printPoster() {
+  const p = getParams();
+  const w = window.open(buildURL(p), '_blank');
+  w.addEventListener('load', () => setTimeout(() => w.print(), 1500));
+}
+
+// Auto-detect timezone
+function autoDetectTZ() {
+  const offset = new Date().getTimezoneOffset(); // minutes behind UTC
+  const map = {240:'ET', 300:'CT', 360:'MT', 420:'PT', 0:'BST', '-60':'CEST', '-120':'CEST', '-240':'GST'};
+  // Summer offsets (DST): ET=-240, CT=-300, MT=-360, PT=-420, BST=-60, CEST=-120
+  const summerMap = {'-240':'ET', '-300':'CT', '-360':'MT', '-420':'PT', '-60':'BST', '-120':'CEST', '-240':'GST'};
+  const detected = summerMap[String(-offset)] || map[String(-offset)];
+  if (detected) {
+    const sel = document.getElementById('sel-tz');
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === detected) { sel.selectedIndex = i; break; }
+    }
   }
 }
 
-// Build availability grid
-const grid = document.getElementById('avail-grid');
-Object.entries(VERSIONS).forEach(([key, ver]) => {
-  const div = document.createElement('div');
-  div.className = `avail-item ${ver.ready ? 'ready' : 'coming'}`;
-  const [color, size, tz] = key.split('-');
-  div.textContent = `${color} · ${size} · ${tz}${ver.ready ? '' : ' (soon)'}`;
-  grid.appendChild(div);
-});
-
-updateSelection();
+autoDetectTZ();
+update();
 </script>
-
 </body>
 </html>
