@@ -37,10 +37,10 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .btn-outline{background:var(--card);color:var(--text);border:1px solid var(--card-border)}
 .btn-outline:hover{border-color:var(--gold);box-shadow:0 8px 24px rgba(201,168,48,0.15)}
 
-.preview-wrap{max-width:100%;margin:0 auto 30px;padding:0 40px;padding:0 20px}
+.preview-wrap{max-width:1060px;margin:0 auto 30px;padding:0 20px;padding:0 20px}
 .preview-label{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);margin-bottom:8px}
-.preview-box{position:relative;width:100%;padding-top:0;background:var(--card);border-radius:8px;border:1px solid var(--card-border);overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.4)}
-.preview-box iframe{position:absolute;top:0;left:0;width:var(--pw,3300px);height:var(--ph,2512px);border:none;transform-origin:0 0}
+.preview-box{position:relative;width:100%;padding-top:0;background:var(--card);border-radius:0;border:1px solid var(--card-border);overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.preview-box iframe{position:absolute;top:0;left:0;border:none;transform-origin:0 0;overflow:hidden}
 .preview-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-dim);pointer-events:none;background:rgba(10,12,24,0.7);transition:opacity 0.3s}
 .preview-overlay.hidden{opacity:0}
 
@@ -138,7 +138,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 <div class="preview-wrap">
   <div class="preview-label">Live Preview</div>
   <div class="preview-box">
-    <iframe id="preview" sandbox="allow-scripts"></iframe>
+    <iframe id="preview" sandbox="allow-scripts" scrolling="no"></iframe>
     <div class="preview-overlay" id="overlay">Loading preview…</div>
   </div>
 </div>
@@ -228,16 +228,14 @@ function printPoster() {
 function scalePreview() {
   const box = document.querySelector('.preview-box');
   const iframe = document.getElementById('preview');
-  const wrap = document.querySelector('.preview-wrap');
-  if (!box || !iframe || !wrap) return;
-  const sz = getParams().size;
-  // Full width, aspect ratio determines height
-  const sizeW = {'22x17':3300,'24x16':3768,'24x36':3768}[getParams().size] || 3300;
-  const sizeH = {'22x17':2512,'24x16':2512,'24x36':5652}[getParams().size] || 2512;
+  if (!box || !iframe) return;
+  const dims = {'22x17':[3300,2512],'A3':[3552,2512],'24x16':[3768,2512],'24x36':[3768,5652]};
+  const [sizeW,sizeH] = dims[getParams().size] || [3300,2512];
   const scale = box.offsetWidth / sizeW;
   iframe.style.width = sizeW + 'px';
   iframe.style.height = sizeH + 'px';
   iframe.style.transform = 'scale(' + scale + ')';
+  iframe.scrolling = 'no';
   box.style.height = Math.round(sizeH * scale) + 'px';
 }
 window.addEventListener('resize', scalePreview);
