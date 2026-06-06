@@ -349,8 +349,9 @@ document.querySelector('style').textContent+=`
 `;
 // Auto-fit to browser viewport on initial load only
 (function(){
+  const nozoom = params.get("nozoom")==="1";
   const scale = document.documentElement.clientWidth / SZ.w * 0.99;
-  if (scale < 1) {
+  if (scale < 1 && !nozoom) {
     document.body.style.zoom = scale;
   }
 })();
