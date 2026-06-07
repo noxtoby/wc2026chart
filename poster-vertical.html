@@ -481,7 +481,7 @@ V.forEach(v=>{
         if(isKO){
           const rd=KOL[grp]||grp;const hasT=!!t1;const hasF=!!f1;let r3='';
           if(hasT)r3=`<div class="mc-ko-feeder">${t1} <span style="color:#c9a830">v</span> ${t2}</div>`;
-          if(hasF)r3+=`<div class="mc-ko-feeder">${f1} <span style="color:#c9a830">v</span> ${f2}</div>`;
+          if(hasF)r3+=`<div class="mc-ko-feeder" style="${grp==="FIN"?"font-size:22px":""}">${f1} <span style="color:#c9a830">v</span> ${f2}</div>`;
           inner+=`<div style="flex:1.2"></div><div class="mc-ko-round" style="${grp==="FIN"?"font-size:26px":""}">${rd}</div><div style="height:6px"></div><div class="mc-ko-num">Match #${num}</div><div style="height:6px"></div>${r3}<div style="height:6px"></div><div class="mc-ko-time">${tD}${chan?'·'+chan:''}</div><div style="flex:1"></div>`;
         } else {
           inner+=`<div class="mc-grp-top">GROUP ${grp}</div><div class="mc-teams-row"><span class="mc-team-left">${t1}</span><span class="mc-tv">v</span><span class="mc-team-right">${t2}</span></div>
