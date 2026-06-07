@@ -512,7 +512,7 @@ V.forEach(v=>{
         } else {
           inner+=`<div class="mc-teams-row"><span class="mc-team-left">${t1}</span><span class="mc-tv">v</span><span class="mc-team-right">${t2}</span></div>
             <div class="mc-flags-row"><div class="mc-flag-wrap"><img class="mc-flag" src="${fU(t1)}" alt="${t1}"></div><div class="mc-flag-wrap"><img class="mc-flag" src="${fU(t2)}" alt="${t2}"></div></div>
-            <div class="mc-botline"><span class="mc-grp">GROUP ${grp}</span><span class="mc-num">#${num}</span><span class="mc-time">${tD}${chan?'·'+chan:''}</span></div>`;
+            <div class="mc-botline"><span class="mc-grp">GROUP ${grp}</span><span class="mc-num">#${num}</span><span class="mc-time">${tD}${chan?'·'+chan:''}</span></div>`;
         }
         gh+=`<div class="mc" style="left:-${oP}%;width:${wP}%;background-color:${bg};z-index:5;overflow:hidden">${inner}</div>`;
       });
@@ -631,7 +631,7 @@ const gA=document.getElementById('groups-area');
 const grpTitle=dateFmt==='uk'?'Group Stage \u2022 12 Groups \u2022 48 Teams \u2022 '+gsStartDay+'\u2013'+gsEndDay+' June 2026':'Group Stage \u2022 12 Groups \u2022 48 Teams \u2022 June '+gsStartDay+'\u2013'+gsEndDay+', 2026';
 let gH='<div class="groups-title">'+grpTitle+'</div><div class="groups-grid">';
 Object.keys(GROUPS).forEach(g=>{
-  gH+='<div class="grp-box"><div class="grp-hdr">GROUP '+g+'</div>';
+  gH+='<div class="grp-box"><div class="grp-hdr">GROUP\u00A0'+g+'</div>';
   GROUPS[g].forEach(([iso,ab,nm])=>{gH+=`<div class="grp-team"><div class="fl-wrap"><img class="fl" src="https://flagcdn.com/w80/${iso}.png" alt="${ab}"></div><span class="ab">${ab}</span><span class="nm">${nm}</span></div>`});
   gH+='<div class="grp-matches">';
   GM[g].forEach(s=>{const p=s.split(' ');const tD=fmt24((p[4].includes(':')&&p[5])?p[4].replace(/[ap]$/,''):p[4]);
@@ -639,6 +639,123 @@ Object.keys(GROUPS).forEach(g=>{
   gH+='</div></div>';
 });
 gH+='</div>';gA.innerHTML=gH;
+
+// ===== CLIENT-SIDE PDF GENERATION =====
+if(params.get('pdf')==='1'){
+const pdfOverlay=document.createElement('div');
+pdfOverlay.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Roboto,sans-serif';
+pdfOverlay.innerHTML='<div style="color:#c9a830;font-size:48px;font-weight:700;letter-spacing:2px;margin-bottom:18px">GENERATING PDF</div><div id="pdf-status" style="color:#bbc;font-size:28px">Loading libraries\u2026</div><div style="margin-top:30px;width:300px;height:6px;background:#1e2248;border-radius:3px;overflow:hidden"><div id="pdf-bar" style="width:0%;height:100%;background:#c9a830;border-radius:3px;transition:width 0.4s"></div></div>';
+document.body.appendChild(pdfOverlay);
+const pdfBar=document.getElementById('pdf-bar');
+const pdfStatus=document.getElementById('pdf-status');
+
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+
+function svgBracketToCanvas(svgEl){
+  const w=parseInt(svgEl.getAttribute('width'));
+  const vb=svgEl.getAttribute('viewBox').split(' ').map(Number);
+  const vbW=vb[2],vbH=vb[3];
+  const scaleF=2;
+  const canvas=document.createElement('canvas');
+  canvas.width=Math.ceil(vbW*scaleF);
+  canvas.height=Math.ceil(vbH*scaleF);
+  const ctx=canvas.getContext('2d');
+  ctx.scale(scaleF,scaleF);
+  ctx.translate(-vb[0],-vb[1]);
+  function drawRoundRect(cx,x,y,w,h,r){cx.beginPath();if(cx.roundRect){cx.roundRect(x,y,w,h,r)}else{cx.moveTo(x+r,y);cx.lineTo(x+w-r,y);cx.quadraticCurveTo(x+w,y,x+w,y+r);cx.lineTo(x+w,y+h-r);cx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);cx.lineTo(x+r,y+h);cx.quadraticCurveTo(x,y+h,x,y+h-r);cx.lineTo(x,y+r);cx.quadraticCurveTo(x,y,x+r,y)}cx.closePath()}
+  // Draw rect background
+  const rect=svgEl.querySelector('rect');
+  if(rect){
+    const rx=parseFloat(rect.getAttribute('rx'))||0;
+    const x=parseFloat(rect.getAttribute('x'));
+    const y=parseFloat(rect.getAttribute('y'));
+    const rw=parseFloat(rect.getAttribute('width'));
+    const rh=parseFloat(rect.getAttribute('height'));
+    ctx.fillStyle=rect.getAttribute('fill');
+    ctx.strokeStyle=rect.getAttribute('stroke');
+    ctx.lineWidth=parseFloat(rect.getAttribute('stroke-width'));
+    ctx.beginPath();drawRoundRect(ctx,x,y,rw,rh,rx);ctx.fill();ctx.stroke();
+  }
+  // Draw all lines
+  svgEl.querySelectorAll('line').forEach(ln=>{
+    ctx.beginPath();
+    ctx.moveTo(parseFloat(ln.getAttribute('x1')),parseFloat(ln.getAttribute('y1')));
+    ctx.lineTo(parseFloat(ln.getAttribute('x2')),parseFloat(ln.getAttribute('y2')));
+    ctx.strokeStyle=ln.getAttribute('stroke');
+    ctx.lineWidth=parseFloat(ln.getAttribute('stroke-width'));
+    ctx.stroke();
+  });
+  // Draw all text
+  svgEl.querySelectorAll('text').forEach(txt=>{
+    const x=parseFloat(txt.getAttribute('x'));
+    const y=parseFloat(txt.getAttribute('y'));
+    const fs=parseFloat(txt.getAttribute('font-size'));
+    const fw=txt.getAttribute('font-weight')||'400';
+    const fill=txt.getAttribute('fill');
+    const anchor=txt.getAttribute('text-anchor')||'start';
+    ctx.font=fw+' '+fs+'px Roboto,sans-serif';
+    ctx.fillStyle=fill;
+    ctx.textAlign=anchor==='middle'?'center':anchor==='end'?'right':'left';
+    ctx.textBaseline='alphabetic';
+    ctx.fillText(txt.textContent,x,y);
+  });
+  // Match SVG positioning
+  canvas.style.cssText=svgEl.style.cssText;
+  canvas.style.width=w+'px';
+  canvas.style.height=Math.ceil(vbH*(w/vbW))+'px';
+  svgEl.parentNode.replaceChild(canvas,svgEl);
+}
+
+async function generatePDF(){
+  try{
+    pdfBar.style.width='10%';
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+    pdfBar.style.width='20%';pdfStatus.textContent='Loading PDF library\u2026';
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    pdfBar.style.width='30%';pdfStatus.textContent='Waiting for fonts & images\u2026';
+    // Wait for fonts
+    await document.fonts.ready;
+    // Wait for all images to load
+    const imgs=[...document.querySelectorAll('img')];
+    await Promise.all(imgs.map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=r;img.onerror=r})));
+    await new Promise(r=>setTimeout(r,2000));
+    pdfBar.style.width='45%';pdfStatus.textContent='Converting bracket\u2026';
+    // Convert SVG bracket to canvas
+    const svgs=[...document.querySelectorAll('#grid-area svg')];
+    svgs.forEach(s=>svgBracketToCanvas(s));
+    // Ensure no zoom
+    document.body.style.zoom='1';
+    pdfBar.style.width='55%';pdfStatus.textContent='Rendering poster\u2026';
+    await new Promise(r=>setTimeout(r,300));
+    // Hide overlay during capture
+    pdfOverlay.style.display='none';
+    const bodyW=parseInt(document.body.style.width);
+    const bodyH=parseInt(document.body.style.height);
+    const canvas=await html2canvas(document.body,{
+      width:bodyW,height:bodyH,
+      windowWidth:bodyW+50,windowHeight:bodyH+50,
+      scale:1,useCORS:true,allowTaint:false,logging:false,
+      backgroundColor:null,
+      imageTimeout:15000
+    });
+    pdfOverlay.style.display='flex';
+    pdfBar.style.width='85%';pdfStatus.textContent='Creating PDF\u2026';
+    const{jsPDF}=window.jspdf;
+    const pSizes={'22x17':[22,17],'A3':[16.535,11.693],'24x16':[24,16]};
+    const[pW,pH]=pSizes[SIZE]||[22,17];
+    const pdf=new jsPDF({orientation:'landscape',unit:'in',format:[pH,pW]});
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',0,0,pW,pH);
+    pdf.save('WC2026_'+SIZE+'_'+TZ+'_'+THEME+'.pdf');
+    pdfBar.style.width='100%';pdfStatus.textContent='PDF Downloaded \u2714';
+    setTimeout(()=>{pdfOverlay.remove()},2500);
+  }catch(err){
+    pdfStatus.textContent='Error: '+err.message;
+    pdfStatus.style.color='#ff6666';
+    console.error('PDF generation failed:',err);
+  }
+}
+requestAnimationFrame(()=>setTimeout(generatePDF,500));
+}
 </script>
 </body>
 </html>
