@@ -673,10 +673,12 @@ Object.keys(GROUPS).forEach(g=>{
 gH+='</div>';gA.innerHTML=gH;
 
 // ===== CLIENT-SIDE PDF GENERATION =====
-if(params.get('pdf')==='1'){
+const _exportMode=params.get('pdf')==='1'?'pdf':params.get('png')==='1'?'png':null;
+if(_exportMode){
+const _label=_exportMode.toUpperCase();
 const pdfOverlay=document.createElement('div');
 pdfOverlay.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Roboto,sans-serif';
-pdfOverlay.innerHTML='<div style="color:#c9a830;font-size:48px;font-weight:700;letter-spacing:2px;margin-bottom:18px">GENERATING PDF</div><div id="pdf-status" style="color:#bbc;font-size:28px">Loading libraries\u2026</div><div style="margin-top:30px;width:300px;height:6px;background:#1e2248;border-radius:3px;overflow:hidden"><div id="pdf-bar" style="width:0%;height:100%;background:#c9a830;border-radius:3px;transition:width 0.4s"></div></div>';
+pdfOverlay.innerHTML='<div style="color:#c9a830;font-size:48px;font-weight:700;letter-spacing:2px;margin-bottom:18px">GENERATING '+_label+'</div><div id="pdf-status" style="color:#bbc;font-size:28px">Loading libraries\u2026</div><div style="margin-top:30px;width:300px;height:6px;background:#1e2248;border-radius:3px;overflow:hidden"><div id="pdf-bar" style="width:0%;height:100%;background:#c9a830;border-radius:3px;transition:width 0.4s"></div></div>';
 document.body.appendChild(pdfOverlay);
 const pdfBar=document.getElementById('pdf-bar');
 const pdfStatus=document.getElementById('pdf-status');
@@ -737,8 +739,8 @@ async function generatePDF(){
   try{
     pdfBar.style.width='10%';
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
-    pdfBar.style.width='20%';pdfStatus.textContent='Loading PDF library\u2026';
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    if(_exportMode==='pdf'){pdfBar.style.width='20%';pdfStatus.textContent='Loading PDF library\u2026';
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');}
     pdfBar.style.width='30%';pdfStatus.textContent='Waiting for fonts & images\u2026';
     await document.fonts.ready;
     const imgs=[...document.querySelectorAll('img')];
@@ -760,12 +762,17 @@ async function generatePDF(){
       imageTimeout:15000
     });
     pdfOverlay.style.display='flex';
-    pdfBar.style.width='85%';pdfStatus.textContent='Creating PDF\u2026';
-    const{jsPDF}=window.jspdf;
-    const pdf=new jsPDF({orientation:'portrait',unit:'in',format:[24,36]});
-    pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',0,0,24,36);
-    pdf.save('WC2026_24x36_'+TZ+'_'+THEME+'.pdf');
-    pdfBar.style.width='100%';pdfStatus.textContent='PDF Downloaded \u2714';
+    pdfBar.style.width='85%';pdfStatus.textContent='Creating '+_label+'\u2026';
+    const fname='WC2026_24x36_'+TZ+'_'+THEME;
+    if(_exportMode==='pdf'){
+      const{jsPDF}=window.jspdf;
+      const pdf=new jsPDF({orientation:'portrait',unit:'in',format:[24,36]});
+      pdf.addImage(canvas.toDataURL('image/jpeg',0.92),'JPEG',0,0,24,36);
+      pdf.save(fname+'.pdf');
+    } else {
+      canvas.toBlob(blob=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname+'.png';a.click();URL.revokeObjectURL(a.href)},'image/png');
+    }
+    pdfBar.style.width='100%';pdfStatus.textContent=_label+' Downloaded \u2714';
     setTimeout(()=>{pdfOverlay.remove()},2500);
   }catch(err){
     pdfStatus.textContent='Error: '+err.message;

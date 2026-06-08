@@ -142,6 +142,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   <a class="btn btn-gold" id="btn-open" href="#" target="_blank">↗ Open Poster</a>
   <button class="btn btn-outline" id="btn-print" onclick="printPoster()">🖨 Print</button>
   <button class="btn btn-outline" id="btn-pdf" onclick="downloadPDF()">📥 Download PDF</button>
+  <button class="btn btn-outline" id="btn-png" onclick="downloadPNG()">🖼 Download PNG</button>
   <a class="btn btn-outline" id="btn-download" href="#" download>📄 Download HTML</a>
 </div>
 
@@ -230,6 +231,12 @@ function printPoster() {
 function downloadPDF() {
   const p = getParams();
   const url = buildURL(p) + '&pdf=1&nozoom=1';
+  window.open(url, '_blank');
+}
+
+function downloadPNG() {
+  const p = getParams();
+  const url = buildURL(p) + '&png=1&nozoom=1';
   window.open(url, '_blank');
 }
 
