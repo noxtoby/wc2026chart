@@ -7,10 +7,10 @@
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
   *{margin:0;padding:0;box-sizing:border-box;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
   body{width:3768px;height:5652px;font-family:'Roboto',sans-serif;background-color:#0e1025;color:#fff;position:relative;overflow:auto}
-  .title-bar{position:absolute;top:0;left:0;right:0;height:174px;background-color:#0c1128;display:flex;align-items:baseline;padding-top:70px;padding-left:35px;border-bottom:3px solid #c9a830}
+  .title-bar{position:absolute;top:0;left:0;right:0;height:174px;background-color:#0c1128;display:flex;align-items:baseline;padding-top:60px;padding-left:35px;border-bottom:3px solid #c9a830}
   .title-bar h1{font-size:109px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#fff;line-height:1}.title-bar .year{color:#c9a830}
-  .title-bar .hosts{font-size:79px;font-weight:700;color:#c9a830;margin-left:80px;letter-spacing:2px;line-height:1}
-  .title-bar .dates{font-size:79px;font-weight:700;color:#eef;margin-left:19px;letter-spacing:2px;line-height:1}
+  .title-bar .hosts{font-size:79px;font-weight:700;color:#c9a830;margin-left:100px;letter-spacing:2px;line-height:1}
+  .title-bar .dates{font-size:79px;font-weight:700;color:#eef;margin-left:24px;letter-spacing:2px;line-height:1}
   .title-info{position:absolute;right:30px;bottom:3px;text-align:right;font-size:23px;color:#8899aa;line-height:1.35}
   .venue-col{position:absolute;top:174px;left:0;z-index:3;border-right:2px solid #c9a830}
   .v-label{display:flex;flex-direction:column;justify-content:center;padding:18px 8px 3px 12px;border-bottom:1px solid rgba(255,255,255,0.04);border-right:2px solid ${P.vColor}}
@@ -242,6 +242,7 @@ const P=PALETTES[THEME]||PALETTES.dark;
 document.querySelector('style').textContent+=`
 body{background-color:${P.bodyBg}!important;color:${P.textMain}!important}
 .title-bar{background-color:${P.titleBg}!important;border-bottom-color:${P.vColor}!important}
+.title-bar .dates{color:${P.textDates}!important}
 .title-bar h1{color:${P.textMain}!important}
 .v-city{color:${P.textMain}!important}
 .v-stad{color:${P.stadColor}!important}
@@ -376,7 +377,7 @@ const gsEndDay=gsMaxDate%100;
     const infoLine2='All times '+TZ_NAME[TZ]+clockLabel+(tvText?' \u00a0|\u00a0 '+tvText:'');
     tb.innerHTML='<h1>2026 <span class="year">FIFA World Cup</span></h1>'+
       '<div class="hosts"><span style="color:'+P.textHost[0]+'">CANADA</span> <span style="color:'+P.dotColor+'">\u2022</span> <span style="color:'+P.textHost[1]+'">MEXICO</span> <span style="color:'+P.dotColor+'">\u2022</span> <span style="color:'+P.textHost[2]+'">USA</span></div>'+
-      '<div class="dates" style="margin-left:80px">'+datesText+'</div>'+
+      '<div class="dates" style="margin-left:100px">'+datesText+'</div>'+
       '<div class="title-info">48 Teams \u00a0|\u00a0 104 Matches<br>'+infoLine2+'</div>';
   }
 }
