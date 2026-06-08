@@ -605,10 +605,10 @@ function buildBH(seeds,matches,x0,y0,dir,sfBias){
 }
 
 const bSeedL=87,bSeedR=594;
-const bLS=['2A','2B','1F','2C','1C','2F','1E','3rd','2E','2I','1I','3rd','1A','3rd','1L','3rd'];
-const bLM=[[73,76,74,75,77,78,79,80],[89,90,91,92],[97,98],[101]];
-const bRS=['1G','3rd','1D','3rd','1H','2J','2K','2L','1B','3rd','2D','2G','1J','2H','1K','3rd'];
-const bRM=[[81,82,83,84,85,86,87,88],[93,94,95,96],[99,100],[102]];
+const bLS=['1C','2F','2E','2I','2A','2B','1E','3rd','2K','2L','1H','2J','1D','3rd','1G','3rd'];
+const bLM=[[74,77,73,75,83,84,81,82],[89,90,93,94],[97,98],[101]];
+const bRS=['1F','2C','1I','3rd','1A','3rd','1L','3rd','1J','2H','2D','2G','1B','3rd','1K','3rd'];
+const bRM=[[76,78,79,80,86,88,85,87],[91,92,95,96],[99,100],[102]];
 
 const bLeft=buildBH(bLS,bLM,bSeedL,34,1,0.25);
 const bRight=buildBH(bRS,bRM,bSeedR,34,-1,0.75);
