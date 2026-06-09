@@ -505,7 +505,12 @@ stageOrder.forEach(([key,label])=>{
   }
   stgData.push({s:startPx,e:endPx,label,_maxMo:r.maxMo,_maxDy:r.maxDy});
 });
-stgData.forEach(({s,e,label})=>{const w=e-s;stg+=`<div class="stage-label-abs" style="left:${s-(w<250?8:0)}px;width:${w+(w<250?16:0)}px">${label}</div>`});
+stgData.forEach(({s,e,label},idx)=>{const w=e-s;
+  const prevEnd=idx>0?stgData[idx-1].e:0;
+  const nextStart=idx<stgData.length-1?stgData[idx+1].s:Infinity;
+  const padL=(w<250&&s-prevEnd>4)?8:0;
+  const padR=(w<250&&nextStart-e>4)?8:0;
+  stg+=`<div class="stage-label-abs" style="left:${s-padL}px;width:${w+padL+padR}px">${label}</div>`});
 
 // OFF days: find gaps between stages
 const allMatchDates=new Set();M.forEach(m=>allMatchDates.add(m[1]));
