@@ -21,7 +21,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0c18;--card:#12152a;--card-border:#1e2248;--gold:#c9a830;--text:#e8eaf0;--text-dim:#8890aa;--us:#4a80cc;--mx:#2eaa60;--ca:#cc4444}
-[data-theme="light"]{--bg:#f0f2f8;--card:#ffffff;--card-border:#d0d4e0;--gold:#8a6d00;--text:#1a1e30;--text-dim:#556677;--us:#2a5aaa;--mx:#2a8a3a;--ca:#c44040}
+[data-theme="light"]{--bg:#f0f2f8;--card:#ffffff;--card-border:#d0d4e0;--gold:#9a7400;--text:#1a1e30;--text-dim:#556677;--us:#2a5aaa;--mx:#2a8a3a;--ca:#c44040}
 [data-theme="light"] .hero{background:linear-gradient(180deg,#e8ecf4,#f0f2f8)}
 [data-theme="light"] .hero h1 span:first-child{color:#1a1e30}
 [data-theme="light"] .btn-gold{background:linear-gradient(135deg,#b8960a,#d4a820);color:#fff;box-shadow:0 4px 16px rgba(138,109,0,0.2)}
@@ -32,16 +32,16 @@
 [data-theme="light"] .config-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23556677' stroke-width='1.5' fill='none'/%3E%3C/svg%3E")}
 [data-theme="light"] .how-to code{background:#e8ecf4}
 [data-theme="light"] 
+.fav-item{display:flex;align-items:center;gap:6px;padding:3px 14px;cursor:pointer;font-size:14px;color:var(--text)}
+.fav-item:hover{background:rgba(201,168,48,0.08)}
+.fav-item input{accent-color:var(--gold);width:14px;height:14px;cursor:pointer;margin:1px 5px 0 0;flex-shrink:0}
+.fav-flag{width:22px;height:15px;object-fit:contain;border-radius:1px;margin-right:5px;flex-shrink:0}
+.fav-item span{flex:1}
 .fav-dropdown{position:relative}
 .fav-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;padding:11px 14px;background:var(--bg);color:var(--text-dim);border:1px solid var(--card-border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:15px;cursor:pointer}
 .fav-panel{display:none;position:absolute;top:100%;left:0;right:0;max-height:320px;overflow-y:auto;background:var(--card);border:1px solid var(--card-border);border-radius:0 0 7px 7px;z-index:10;margin-top:-1px}
 .fav-dropdown.open .fav-panel{display:block}
 .fav-dropdown.open .fav-trigger{border-radius:7px 7px 0 0;border-color:var(--gold)}
-.fav-item{display:flex;align-items:center;gap:6px;padding:5px 14px;cursor:pointer;font-size:14px;color:var(--text)}
-.fav-item:hover{background:rgba(201,168,48,0.08)}
-.fav-item input{accent-color:var(--gold);width:16px;height:16px;cursor:pointer;margin-right:6px}
-.fav-flag{width:24px;height:16px;object-fit:contain;border-radius:1px;margin-right:8px;vertical-align:middle}
-.fav-item span{flex:1;align-self:center}
 .footer{border-top-color:#d0d4e0}
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -83,16 +83,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .how-to code{background:var(--card);padding:2px 6px;border-radius:3px;font-family:'Space Mono',monospace;font-size:12px;color:var(--gold)}
 
 
-.fav-dropdown{position:relative}
-.fav-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;padding:11px 14px;background:var(--bg);color:var(--text-dim);border:1px solid var(--card-border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:15px;cursor:pointer}
-.fav-panel{display:none;position:absolute;top:100%;left:0;right:0;max-height:320px;overflow-y:auto;background:var(--card);border:1px solid var(--card-border);border-radius:0 0 7px 7px;z-index:10;margin-top:-1px}
-.fav-dropdown.open .fav-panel{display:block}
-.fav-dropdown.open .fav-trigger{border-radius:7px 7px 0 0;border-color:var(--gold)}
-.fav-item{display:flex;align-items:center;gap:6px;padding:5px 14px;cursor:pointer;font-size:14px;color:var(--text)}
-.fav-item:hover{background:rgba(201,168,48,0.08)}
-.fav-item input{accent-color:var(--gold);width:16px;height:16px;cursor:pointer;margin-right:6px}
-.fav-flag{width:24px;height:16px;object-fit:contain;border-radius:1px;margin-right:8px;vertical-align:middle}
-.fav-item span{flex:1;align-self:center}
 .footer{text-align:center;padding:25px 20px;border-top:1px solid var(--card-border);color:var(--text-dim);font-size:13px;line-height:1.8}
 .footer a{color:var(--gold);text-decoration:none}
 </style>

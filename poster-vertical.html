@@ -95,18 +95,19 @@
 @media print { body { zoom: 1 !important; } }
 
 .mc.fav{box-shadow:inset 0 0 0 3px #c9a830;z-index:8!important}
-.mc.fav .mc-team-left,.mc.fav .mc-team-right{color:#c9a830!important}
+.mc-team-fav{color:#c9a830!important}
+[data-theme="light"] .mc-team-fav{color:#9a7400!important}
 .grp-team.fav .ab,.grp-team.fav .nm{color:#c9a830!important}
 .g-row.fav-row{background:rgba(201,168,48,0.06)!important}
-.g-cell.fav-day{}
+.g-cell.fav-day{border-left:2px solid rgba(201,168,48,0.4);border-right:2px solid rgba(201,168,48,0.4)}
 .grp-box.fav-grp{outline:3px solid #c9a830;outline-offset:-1px}
-.g-cell.fav-match{outline:3px solid #c9a830;outline-offset:-2px;z-index:2}
+
 .grp-match-fav{color:#c9a830!important}
 .d-num.fav-day-hdr,.d-dow.fav-day-hdr{color:#c9a830!important;font-weight:900}
-[data-theme="light"] .d-num.fav-day-hdr,[data-theme="light"] .d-dow.fav-day-hdr{color:#7a5d00!important}
+[data-theme="light"] .d-num.fav-day-hdr,[data-theme="light"] .d-dow.fav-day-hdr{color:#9a7400!important}
 
-[data-theme="light"] .mc.fav{box-shadow:inset 0 0 0 3px #8a6d00}
-[data-theme="light"] .grp-team.fav .ab,[data-theme="light"] .grp-team.fav .nm{color:#7a5d00!important}
+[data-theme="light"] .mc.fav{box-shadow:inset 0 0 0 3px #9a7400}
+[data-theme="light"] .grp-team.fav .ab,[data-theme="light"] .grp-team.fav .nm{color:#9a7400!important}
 [data-theme="light"] .g-row.fav-row{background:rgba(138,109,0,0.05)!important}
 
 
@@ -290,16 +291,16 @@ light:{
   strUS:['rgb(225,235,252)','rgb(208,222,248)'],strMX:['rgb(225,245,230)','rgb(210,238,218)'],
   strCA:['rgb(250,228,228)','rgb(242,215,218)'],strDef:['rgb(235,237,245)','rgb(225,228,240)'],
   hdrE:'rgb(232,235,244)',hdrO:'rgb(220,224,238)',
-  textMain:'#1a1e30',textDim:'#334455',textDimmer:'#445566',textGold:'#8a6d00',
+  textMain:'#1a1e30',textDim:'#334455',textDimmer:'#445566',textGold:'#9a7400',
   textHost:['#c44040','#2a8a3a','#2a5aaa'],textDates:'#1a2040',dotColor:'#999',
   border1:'#d0d4e0',border2:'#c8cce0',
-  bracketLine:'rgba(80,80,100,0.5)',bracketText:'#334',bracketGold:'#8a6d00',
+  bracketLine:'rgba(80,80,100,0.5)',bracketText:'#334',bracketGold:'#9a7400',
   bracketBg:'rgba(232,235,248,0.9)',bracketBorder:'rgba(60,65,90,0.35)',
   gridline:'rgba(0,0,0,0.08)',flankBorder:'rgba(0,0,0,0.12)',
   monthBg:'rgba(230,233,248,0.75)',monthBorder:'rgba(138,109,0,0.4)',
   stageBg:'rgba(230,233,248,0.75)',stageBorder:'rgba(138,109,0,0.4)',
-  stageText:'#8a6d00',monthText:'#1a2040',finePrint:'#445566',
-  vColor:'#8a6d00',monthSep:'#b0b4c8',stadColor:'#334455',
+  stageText:'#9a7400',monthText:'#1a2040',finePrint:'#445566',
+  vColor:'#9a7400',monthSep:'#b0b4c8',stadColor:'#334455',
   cellGridline:'rgba(0,0,0,0.07)',grpTeamCode:'#0a0e20',grpTeamName:'#1a1a1a',
   gmMn:'#445566',gmDt:'#334455',gmTi:'#334455',offText:'#99a0b0',koFeeder:'#1a1e30',koNum:'#1a2040',
 }};
@@ -598,7 +599,7 @@ V.forEach((v,vi)=>{
           if(hasF)r3+=`<div class="mc-ko-feeder-row"><span class="mc-ko-fl">${f1}</span><span class="mc-ko-fv">v</span><span class="mc-ko-fr">${f2}</span></div>`;
           inner+=`<div class="mc-ko-num">#${num}</div>${koShift}<div style="flex:0.15"></div><div class="mc-ko-round" style="${grp==="FIN"?"font-size:28px":""}">${rd}</div><div style="height:4px"></div>${r3}<div style="height:4px"></div><div class="mc-ko-boxes"><span class="mc-ko-tbox"></span><span class="mc-ko-tbox"></span></div><div style="height:4px"></div><div class="mc-ko-time">${tD}${showChan&&chan?'·'+chan:''}</div><div style="flex:0.6"></div>`;
         } else {
-          inner+=`<div class="mc-grp-top">${LANG==='es'?'GRUPO':'GROUP'} ${grp}</div><div class="mc-teams-row"><span class="mc-team-left">${t1}</span><span class="mc-tv">v</span><span class="mc-team-right">${t2}</span></div>
+          inner+=`<div class="mc-grp-top">${LANG==='es'?'GRUPO':'GROUP'} ${grp}</div><div class="mc-teams-row"><span class="mc-team-left${hasFav&&FAV.has(t1)?' mc-team-fav':''}">${t1}</span><span class="mc-tv">v</span><span class="mc-team-right${hasFav&&FAV.has(t2)?' mc-team-fav':''}">${t2}</span></div>
             <div class="mc-flags-row"><div class="mc-flag-wrap"><img class="mc-flag" src="${fU(t1)}" alt="${t1}"></div><div class="mc-flag-wrap"><img class="mc-flag" src="${fU(t2)}" alt="${t2}"></div></div>
             <div class="mc-botline"><span class="mc-match-num">#${num}</span><span class="mc-time">${tD}${showChan&&chan?'·'+chan:''}</span></div>`;
         }
