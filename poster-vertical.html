@@ -95,8 +95,6 @@
 @media print { body { zoom: 1 !important; } }
 
 .mc.fav{box-shadow:inset 0 0 0 3px #c9a830;z-index:8!important}
-.g-cell.fav-match{box-shadow:inset 0 0 0 2px rgba(201,168,48,0.5)}
-[data-theme="light"] .g-cell.fav-match{box-shadow:inset 0 0 0 2px rgba(154,116,0,0.4)}
 .mc .mc-team-fav{color:#c9a830!important}
 [data-theme="light"] .mc .mc-team-fav{color:#9a7400!important}
 .grp-team.fav .ab,.grp-team.fav .nm{color:#c9a830!important}
@@ -178,6 +176,7 @@ function t_day(d){return LANG==='es'&&TR.days[d]?TR.days[d]:d}
 function t_stage(s){return LANG==='es'&&TR.stages[s]?TR.stages[s]:s}
 
 const THEME=params.get('theme')||'dark';
+document.documentElement.setAttribute('data-theme',THEME);
 const TZ_OFF={
   // Featured (with TV)
   ET:0,CT:-1,MT:-2,PT:-3,BST:5,
@@ -584,7 +583,7 @@ V.forEach((v,vi)=>{
     const ev=isEv(d,di);const bg=cellBg(v.co,ev);
     if(!d){gh+=`<div class="g-cell${false?' fav-day':''}" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}"></div>`;return}
     const k=(d.getMonth()+1)+'/'+d.getDate();const lk=v.id+'_'+k;const ms=mL[lk];
-    gh+=`<div class="g-cell${hasFav&&favDates.has(k)?' fav-day':''}${hasFav&&favVenueDates.has(lk)?' fav-match':''}" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}">`;
+    gh+=`<div class="g-cell${hasFav&&favDates.has(k)?' fav-day':''}" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}">`;
     if(ms){
       ms.forEach(m=>{
         const[num,,time,t1,t2,grp,,chan,f1,f2]=m;
