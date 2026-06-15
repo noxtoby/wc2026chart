@@ -453,7 +453,6 @@ let widenDay='';
 if(m72&&m78){const[a1,a2]=m72[1].split('/').map(Number);const[b1,b2]=m78[1].split('/').map(Number);const diff=(b1*100+b2)-(a1*100+a2);if(diff===2)widenDay=a1+'/'+(a2+1)}
 const dWts=DD.map(d=>{if(!d)return(tW+=2.2,2.2);const dn=d.getDate(),mo=d.getMonth();const dk=(mo+1)+'/'+dn;if(mo===5&&dn>=gsStartDay&&dn<=gsEndDay)return(tW+=4,4);if(dk===widenDay)return(tW+=4,4);return(tW+=1.8,1.8)});
 const favDates=new Set();
-const favGroups=new Set();
 const favVenueDates=new Set();
 const favGroups=new Set();
 if(hasFav){Object.entries(GROUPS).forEach(([g,teams])=>{teams.forEach(([iso,ab])=>{if(FAV.has(ab))favGroups.add(g)})});M.forEach(m=>{if(m[5]!=='R32'&&m[5]!=='R16'&&m[5]!=='QF'&&m[5]!=='SF'&&m[5]!=='3RD'&&m[5]!=='FIN'){if(FAV.has(m[3])||FAV.has(m[4])){favDates.add(m[1]);favVenueDates.add(m[6]+'_'+m[1])}}})}
