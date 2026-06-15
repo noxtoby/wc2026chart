@@ -31,7 +31,18 @@
 [data-theme="light"] .preview-box{box-shadow:0 8px 30px rgba(0,0,0,0.08)}
 [data-theme="light"] .config-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23556677' stroke-width='1.5' fill='none'/%3E%3C/svg%3E")}
 [data-theme="light"] .how-to code{background:#e8ecf4}
-[data-theme="light"] .footer{border-top-color:#d0d4e0}
+[data-theme="light"] 
+.fav-dropdown{position:relative}
+.fav-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;padding:11px 14px;background:var(--bg);color:var(--text-dim);border:1px solid var(--card-border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:15px;cursor:pointer}
+.fav-panel{display:none;position:absolute;top:100%;left:0;right:0;max-height:320px;overflow-y:auto;background:var(--card);border:1px solid var(--card-border);border-radius:0 0 7px 7px;z-index:10;margin-top:-1px}
+.fav-dropdown.open .fav-panel{display:block}
+.fav-dropdown.open .fav-trigger{border-radius:7px 7px 0 0;border-color:var(--gold)}
+.fav-item{display:flex;align-items:center;gap:8px;padding:7px 14px;cursor:pointer;font-size:14px;color:var(--text)}
+.fav-item:hover{background:rgba(201,168,48,0.08)}
+.fav-item input{accent-color:var(--gold);width:16px;height:16px;cursor:pointer}
+.fav-flag{width:24px;height:16px;object-fit:contain;border-radius:1px}
+.fav-item span{flex:1}
+.footer{border-top-color:#d0d4e0}
 
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
@@ -71,6 +82,17 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .how-to p{color:var(--text-dim);font-size:14px;line-height:1.7;margin-bottom:8px}
 .how-to code{background:var(--card);padding:2px 6px;border-radius:3px;font-family:'Space Mono',monospace;font-size:12px;color:var(--gold)}
 
+
+.fav-dropdown{position:relative}
+.fav-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;padding:11px 14px;background:var(--bg);color:var(--text-dim);border:1px solid var(--card-border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:15px;cursor:pointer}
+.fav-panel{display:none;position:absolute;top:100%;left:0;right:0;max-height:320px;overflow-y:auto;background:var(--card);border:1px solid var(--card-border);border-radius:0 0 7px 7px;z-index:10;margin-top:-1px}
+.fav-dropdown.open .fav-panel{display:block}
+.fav-dropdown.open .fav-trigger{border-radius:7px 7px 0 0;border-color:var(--gold)}
+.fav-item{display:flex;align-items:center;gap:8px;padding:7px 14px;cursor:pointer;font-size:14px;color:var(--text)}
+.fav-item:hover{background:rgba(201,168,48,0.08)}
+.fav-item input{accent-color:var(--gold);width:16px;height:16px;cursor:pointer}
+.fav-flag{width:24px;height:16px;object-fit:contain;border-radius:1px}
+.fav-item span{flex:1}
 .footer{text-align:center;padding:25px 20px;border-top:1px solid var(--card-border);color:var(--text-dim);font-size:13px;line-height:1.8}
 .footer a{color:var(--gold);text-decoration:none}
 </style>
@@ -159,6 +181,65 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       </select>
     </div>
     <div class="config-group">
+      <label id="lbl-fav">Favorite Teams</label>
+      <div class="fav-dropdown" id="fav-dropdown">
+        <div class="fav-trigger" onclick="document.getElementById('fav-dropdown').classList.toggle('open')">
+          <span id="fav-display">Select teams...</span>
+          <svg width="12" height="8" style="flex-shrink:0"><path d="M1 1l5 5 5-5" stroke="var(--text-dim)" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        <div class="fav-panel">
+          <label class="fav-item"><input type="checkbox" value="ALG" onchange="updateFav()"><img src="https://flagcdn.com/w40/dz.png" class="fav-flag"><span>Algeria</span></label>
+<label class="fav-item"><input type="checkbox" value="ARG" onchange="updateFav()"><img src="https://flagcdn.com/w40/ar.png" class="fav-flag"><span>Argentina</span></label>
+<label class="fav-item"><input type="checkbox" value="AUS" onchange="updateFav()"><img src="https://flagcdn.com/w40/au.png" class="fav-flag"><span>Australia</span></label>
+<label class="fav-item"><input type="checkbox" value="AUT" onchange="updateFav()"><img src="https://flagcdn.com/w40/at.png" class="fav-flag"><span>Austria</span></label>
+<label class="fav-item"><input type="checkbox" value="BEL" onchange="updateFav()"><img src="https://flagcdn.com/w40/be.png" class="fav-flag"><span>Belgium</span></label>
+<label class="fav-item"><input type="checkbox" value="BIH" onchange="updateFav()"><img src="https://flagcdn.com/w40/ba.png" class="fav-flag"><span>Bosnia & Hz</span></label>
+<label class="fav-item"><input type="checkbox" value="BRA" onchange="updateFav()"><img src="https://flagcdn.com/w40/br.png" class="fav-flag"><span>Brazil</span></label>
+<label class="fav-item"><input type="checkbox" value="CAN" onchange="updateFav()"><img src="https://flagcdn.com/w40/ca.png" class="fav-flag"><span>Canada</span></label>
+<label class="fav-item"><input type="checkbox" value="CPV" onchange="updateFav()"><img src="https://flagcdn.com/w40/cv.png" class="fav-flag"><span>Cape Verde</span></label>
+<label class="fav-item"><input type="checkbox" value="COL" onchange="updateFav()"><img src="https://flagcdn.com/w40/co.png" class="fav-flag"><span>Colombia</span></label>
+<label class="fav-item"><input type="checkbox" value="CRO" onchange="updateFav()"><img src="https://flagcdn.com/w40/hr.png" class="fav-flag"><span>Croatia</span></label>
+<label class="fav-item"><input type="checkbox" value="CUR" onchange="updateFav()"><img src="https://flagcdn.com/w40/cw.png" class="fav-flag"><span>Curaçao</span></label>
+<label class="fav-item"><input type="checkbox" value="CZE" onchange="updateFav()"><img src="https://flagcdn.com/w40/cz.png" class="fav-flag"><span>Czechia</span></label>
+<label class="fav-item"><input type="checkbox" value="COD" onchange="updateFav()"><img src="https://flagcdn.com/w40/cd.png" class="fav-flag"><span>DR Congo</span></label>
+<label class="fav-item"><input type="checkbox" value="ECU" onchange="updateFav()"><img src="https://flagcdn.com/w40/ec.png" class="fav-flag"><span>Ecuador</span></label>
+<label class="fav-item"><input type="checkbox" value="EGY" onchange="updateFav()"><img src="https://flagcdn.com/w40/eg.png" class="fav-flag"><span>Egypt</span></label>
+<label class="fav-item"><input type="checkbox" value="ENG" onchange="updateFav()"><img src="https://flagcdn.com/w40/gb-eng.png" class="fav-flag"><span>England</span></label>
+<label class="fav-item"><input type="checkbox" value="FRA" onchange="updateFav()"><img src="https://flagcdn.com/w40/fr.png" class="fav-flag"><span>France</span></label>
+<label class="fav-item"><input type="checkbox" value="GER" onchange="updateFav()"><img src="https://flagcdn.com/w40/de.png" class="fav-flag"><span>Germany</span></label>
+<label class="fav-item"><input type="checkbox" value="GHA" onchange="updateFav()"><img src="https://flagcdn.com/w40/gh.png" class="fav-flag"><span>Ghana</span></label>
+<label class="fav-item"><input type="checkbox" value="HAI" onchange="updateFav()"><img src="https://flagcdn.com/w40/ht.png" class="fav-flag"><span>Haiti</span></label>
+<label class="fav-item"><input type="checkbox" value="IRN" onchange="updateFav()"><img src="https://flagcdn.com/w40/ir.png" class="fav-flag"><span>Iran</span></label>
+<label class="fav-item"><input type="checkbox" value="IRQ" onchange="updateFav()"><img src="https://flagcdn.com/w40/iq.png" class="fav-flag"><span>Iraq</span></label>
+<label class="fav-item"><input type="checkbox" value="CIV" onchange="updateFav()"><img src="https://flagcdn.com/w40/ci.png" class="fav-flag"><span>Ivory Coast</span></label>
+<label class="fav-item"><input type="checkbox" value="JPN" onchange="updateFav()"><img src="https://flagcdn.com/w40/jp.png" class="fav-flag"><span>Japan</span></label>
+<label class="fav-item"><input type="checkbox" value="JOR" onchange="updateFav()"><img src="https://flagcdn.com/w40/jo.png" class="fav-flag"><span>Jordan</span></label>
+<label class="fav-item"><input type="checkbox" value="MEX" onchange="updateFav()"><img src="https://flagcdn.com/w40/mx.png" class="fav-flag"><span>Mexico</span></label>
+<label class="fav-item"><input type="checkbox" value="MAR" onchange="updateFav()"><img src="https://flagcdn.com/w40/ma.png" class="fav-flag"><span>Morocco</span></label>
+<label class="fav-item"><input type="checkbox" value="NED" onchange="updateFav()"><img src="https://flagcdn.com/w40/nl.png" class="fav-flag"><span>Netherlands</span></label>
+<label class="fav-item"><input type="checkbox" value="NZL" onchange="updateFav()"><img src="https://flagcdn.com/w40/nz.png" class="fav-flag"><span>New Zealand</span></label>
+<label class="fav-item"><input type="checkbox" value="NOR" onchange="updateFav()"><img src="https://flagcdn.com/w40/no.png" class="fav-flag"><span>Norway</span></label>
+<label class="fav-item"><input type="checkbox" value="PAN" onchange="updateFav()"><img src="https://flagcdn.com/w40/pa.png" class="fav-flag"><span>Panama</span></label>
+<label class="fav-item"><input type="checkbox" value="PAR" onchange="updateFav()"><img src="https://flagcdn.com/w40/py.png" class="fav-flag"><span>Paraguay</span></label>
+<label class="fav-item"><input type="checkbox" value="POR" onchange="updateFav()"><img src="https://flagcdn.com/w40/pt.png" class="fav-flag"><span>Portugal</span></label>
+<label class="fav-item"><input type="checkbox" value="QAT" onchange="updateFav()"><img src="https://flagcdn.com/w40/qa.png" class="fav-flag"><span>Qatar</span></label>
+<label class="fav-item"><input type="checkbox" value="KOR" onchange="updateFav()"><img src="https://flagcdn.com/w40/kr.png" class="fav-flag"><span>S. Korea</span></label>
+<label class="fav-item"><input type="checkbox" value="KSA" onchange="updateFav()"><img src="https://flagcdn.com/w40/sa.png" class="fav-flag"><span>Saudi Arabia</span></label>
+<label class="fav-item"><input type="checkbox" value="SCO" onchange="updateFav()"><img src="https://flagcdn.com/w40/gb-sct.png" class="fav-flag"><span>Scotland</span></label>
+<label class="fav-item"><input type="checkbox" value="SEN" onchange="updateFav()"><img src="https://flagcdn.com/w40/sn.png" class="fav-flag"><span>Senegal</span></label>
+<label class="fav-item"><input type="checkbox" value="RSA" onchange="updateFav()"><img src="https://flagcdn.com/w40/za.png" class="fav-flag"><span>South Africa</span></label>
+<label class="fav-item"><input type="checkbox" value="ESP" onchange="updateFav()"><img src="https://flagcdn.com/w40/es.png" class="fav-flag"><span>Spain</span></label>
+<label class="fav-item"><input type="checkbox" value="SWE" onchange="updateFav()"><img src="https://flagcdn.com/w40/se.png" class="fav-flag"><span>Sweden</span></label>
+<label class="fav-item"><input type="checkbox" value="SUI" onchange="updateFav()"><img src="https://flagcdn.com/w40/ch.png" class="fav-flag"><span>Switzerland</span></label>
+<label class="fav-item"><input type="checkbox" value="TUN" onchange="updateFav()"><img src="https://flagcdn.com/w40/tn.png" class="fav-flag"><span>Tunisia</span></label>
+<label class="fav-item"><input type="checkbox" value="TUR" onchange="updateFav()"><img src="https://flagcdn.com/w40/tr.png" class="fav-flag"><span>Türkiye</span></label>
+<label class="fav-item"><input type="checkbox" value="USA" onchange="updateFav()"><img src="https://flagcdn.com/w40/us.png" class="fav-flag"><span>United States</span></label>
+<label class="fav-item"><input type="checkbox" value="URU" onchange="updateFav()"><img src="https://flagcdn.com/w40/uy.png" class="fav-flag"><span>Uruguay</span></label>
+<label class="fav-item"><input type="checkbox" value="UZB" onchange="updateFav()"><img src="https://flagcdn.com/w40/uz.png" class="fav-flag"><span>Uzbekistan</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="config-group">
       <label id="lbl-lang">Language</label>
       <select id="sel-lang" onchange="if(this.value==='es'){window.location.href='?lang=es'}else{window.location.href=window.location.pathname}">
         <option value="en">English</option>
@@ -203,13 +284,14 @@ function getParams() {
     size: document.getElementById('sel-size').value,
     clock: document.getElementById('sel-clock').value,
     lang: document.getElementById('sel-lang').value,
+    fav: [...document.querySelectorAll('#fav-dropdown input:checked')].map(i=>i.value).join(','),
     datefmt: document.getElementById('sel-datefmt').value
   };
 }
 
 function buildURL(p) {
   const base = p.size==='24x36' ? 'poster-vertical.html' : 'poster.html';
-  return `${base}?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}&size=${p.size}${p.clock==='24'&&!['ET','CT','MT','PT','BST'].includes(p.tz)?'&clock=24':''}${p.lang&&p.lang!=='en'?'&lang='+p.lang:''}${p.datefmt&&p.datefmt!=='auto'?'&datefmt='+p.datefmt:''}`;
+  return `${base}?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}&size=${p.size}${p.clock==='24'&&!['ET','CT','MT','PT','BST'].includes(p.tz)?'&clock=24':''}${p.lang&&p.lang!=='en'?'&lang='+p.lang:''}${p.datefmt&&p.datefmt!=='auto'?'&datefmt='+p.datefmt:''}${p.fav?'&fav='+p.fav:''}`;
 }
 
 function update() {
@@ -336,7 +418,7 @@ const _es = {
   '24 × 36″ (Vertical poster)':'24 × 36″ (Póster vertical)',
   'Open Poster':'Abrir Póster','Print':'Imprimir',
   'Download PDF':'Descargar PDF','Download PNG':'Descargar PNG','Download HTML':'Descargar HTML',
-  'Live Preview':'Vista Previa','Printing Tips':'Consejos de Impresión',
+  'Live Preview':'Vista Previa','Favorite Teams':'Equipos Favoritos','Select teams...':'Selecciona equipos...','Printing Tips':'Consejos de Impresión',
   'Loading preview…':'Cargando vista previa…'
 };
 function applyLang(){
@@ -378,6 +460,8 @@ function applyLang(){
       if(b.textContent.includes('Download PNG'))b.textContent='🖼 '+_es['Download PNG'];
       if(b.textContent.includes('Download HTML'))b.textContent='📄 '+_es['Download HTML'];
     });
+    var favLbl=document.getElementById('lbl-fav');if(favLbl)favLbl.textContent=_es['Favorite Teams'];
+    var favDisp=document.getElementById('fav-display');if(favDisp&&favDisp.textContent==='Select teams...')favDisp.textContent=_es['Select teams...'];
     var h2=document.querySelector('.how-to h2');
     if(h2)h2.textContent=_es['Printing Tips'];
     document.title='Copa Mundial FIFA 2026 – Calendario';
@@ -385,6 +469,20 @@ function applyLang(){
     var twT=document.querySelector('meta[name="twitter:title"]');if(twT)twT.content='Copa Mundial FIFA 2026 – Calendario';
   }
 }
+
+function updateFav(){
+  const checked=[...document.querySelectorAll('#fav-dropdown input:checked')];
+  const display=document.getElementById('fav-display');
+  if(checked.length===0)display.textContent='Select teams...';
+  else if(checked.length<=3)display.textContent=checked.map(i=>i.value).join(', ');
+  else display.textContent=checked.length+' teams selected';
+  update();
+}
+// Init fav from URL
+const _urlFav=new URLSearchParams(window.location.search).get('fav');
+if(_urlFav){_urlFav.split(',').forEach(code=>{const cb=document.querySelector('#fav-dropdown input[value="'+code+'"]');if(cb)cb.checked=true});updateFav()}
+// Close dropdown when clicking outside
+document.addEventListener('click',e=>{if(!e.target.closest('#fav-dropdown'))document.getElementById('fav-dropdown').classList.remove('open')});
 applyLang();
 update();
 _initDone = true;

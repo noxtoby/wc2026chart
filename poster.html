@@ -73,6 +73,18 @@
   .gm-sp{width:6px}
   .gm-ch{color:#aab;font-size:15px;font-weight:500;min-width:22px;text-align:right}
 @media print { body { zoom: 1 !important; } }
+
+.mc.fav{box-shadow:inset 3px 0 0 #c9a830,0 0 8px rgba(201,168,48,0.25)}
+.grp-team.fav{background:rgba(201,168,48,0.12)}
+.g-row.fav-row{background:rgba(201,168,48,0.06)!important}
+.g-cell.fav-day{border-left:1px solid rgba(201,168,48,0.3);border-right:1px solid rgba(201,168,48,0.3)}
+.fav-day-hdr{color:#c9a830!important;font-weight:900}
+
+[data-theme="light"] .mc.fav{box-shadow:inset 3px 0 0 #8a6d00,0 0 8px rgba(138,109,0,0.15)}
+[data-theme="light"] .grp-team.fav{background:rgba(138,109,0,0.1)}
+[data-theme="light"] .g-row.fav-row{background:rgba(138,109,0,0.05)!important}
+[data-theme="light"] .g-cell.fav-day{border-left:1px solid rgba(138,109,0,0.25);border-right:1px solid rgba(138,109,0,0.25)}
+
 </style>
 </head>
 <body>
@@ -127,7 +139,9 @@ const TR={
   // Group table headers
   W:'G',D:'E',L:'P',GF:'GF',GA:'GC',Pts:'Pts'
 };
-const showChan=true;  // channels in match cells follow timezone selection
+const showChan=true;
+const FAV=new Set((params.get('fav')||'').split(',').filter(Boolean));
+const hasFav=FAV.size>0;  // channels in match cells follow timezone selection
 function t_team(name){return LANG==='es'&&TR.teams[name]?TR.teams[name]:name}
 function t_city(name){return LANG==='es'&&TR.cities[name]?TR.cities[name]:name}
 function t_day(d){return LANG==='es'&&TR.days[d]?TR.days[d]:d}
@@ -436,6 +450,8 @@ const m72=M.find(m=>m[0]===72),m78=M.find(m=>m[0]===78);
 let widenDay='';
 if(m72&&m78){const[a1,a2]=m72[1].split('/').map(Number);const[b1,b2]=m78[1].split('/').map(Number);const diff=(b1*100+b2)-(a1*100+a2);if(diff===2)widenDay=a1+'/'+(a2+1)}
 const dWts=DD.map(d=>{if(!d)return(tW+=2.2,2.2);const dn=d.getDate(),mo=d.getMonth();const dk=(mo+1)+'/'+dn;if(mo===5&&dn>=gsStartDay&&dn<=gsEndDay)return(tW+=4,4);if(dk===widenDay)return(tW+=4,4);return(tW+=1.8,1.8)});
+const favDates=new Set();
+if(hasFav){M.forEach(m=>{if(m[5]!=='R32'&&m[5]!=='R16'&&m[5]!=='QF'&&m[5]!=='SF'&&m[5]!=='3RD'&&m[5]!=='FIN'){if(FAV.has(m[3])||FAV.has(m[4]))favDates.add(m[1])}})}
 const dW=dWts.map(w=>Math.round(w*GW/tW));
 const moH=26,hdrH=71,stgH=40;
 const gridH=2512-109-moH-hdrH-stgH-grpH;
@@ -469,7 +485,7 @@ moStr+=`<div class="month-label-abs" style="left:${julS}px;width:${cumPx-julS}px
 moStr+='</div>';
 
 let dh='<div class="date-hdr">';
-DD.forEach((d,i)=>{if(!d){dh+=`<div class="d-col" style="width:${dW[i]}px;background-color:${hdrE}"></div>`;return};const k=(d.getMonth()+1)+'/'+d.getDate();const isM=mDays.has(k);const bg=isEv(d)?hdrE:hdrO;dh+=`<div class="d-col ${isM?'':'rest'}" style="width:${dW[i]}px;background-color:${bg}"><span class="d-dow">${DOW[d.getDay()]}</span><span class="d-num">${d.getDate()}</span></div>`});
+DD.forEach((d,i)=>{if(!d){dh+=`<div class="d-col" style="width:${dW[i]}px;background-color:${hdrE}"></div>`;return};const k=(d.getMonth()+1)+'/'+d.getDate();const isM=mDays.has(k);const bg=isEv(d)?hdrE:hdrO;dh+=`<div class="d-col ${isM?'':'rest'}" style="width:${dW[i]}px;background-color:${bg}"><span class="d-dow">${DOW[d.getDay()]}</span><span class="d-num${hasFav&&favDates.has(k)?' fav-day-hdr':''}">${d.getDate()}</span></div>`});
 dh+='</div>';
 
 let stg='<div class="stage-strip">';
@@ -555,9 +571,9 @@ V.forEach((v,vi)=>{
   gh+=`<div class="g-row" style="height:${rh}px">`;
   DD.forEach((d,di)=>{
     const ev=isEv(d,di);const bg=cellBg(v.co,ev);
-    if(!d){gh+=`<div class="g-cell" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}"></div>`;return}
+    if(!d){gh+=`<div class="g-cell${hasFav&&favDates.has(k)?' fav-day':''}" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}"></div>`;return}
     const k=(d.getMonth()+1)+'/'+d.getDate();const lk=v.id+'_'+k;const ms=mL[lk];
-    gh+=`<div class="g-cell" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}">`;
+    gh+=`<div class="g-cell${hasFav&&favDates.has(k)?' fav-day':''}" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}">`;
     if(ms){
       ms.forEach(m=>{
         const[num,,time,t1,t2,grp,,chan,f1,f2]=m;
@@ -581,7 +597,7 @@ V.forEach((v,vi)=>{
             <div class="mc-flags-row"><div class="mc-flag-wrap"><img class="mc-flag" src="${fU(t1)}" alt="${t1}"></div><div class="mc-flag-wrap"><img class="mc-flag" src="${fU(t2)}" alt="${t2}"></div></div>
             <div class="mc-botline"><span class="mc-grp">${LANG==='es'?'GRUPO':'GROUP'} ${grp}</span><span class="mc-num">#${num}</span><span class="mc-time">${tD}${showChan&&chan?'·'+chan:''}</span></div>`;
         }
-        gh+=`<div class="mc" style="left:-${oP}%;width:${wP}%;background-color:${bg};z-index:5;overflow:hidden">${inner}</div>`;
+        gh+=`<div class="mc${hasFav&&(FAV.has(t1)||FAV.has(t2))?' fav':''}" style="left:-${oP}%;width:${wP}%;background-color:${bg};z-index:5;overflow:hidden">${inner}</div>`;
       });
     }
     gh+='</div>';
@@ -700,7 +716,7 @@ const grpTitle=dateFmt==='uk'?(LANG==='es'?'Fase de Grupos':'Group Stage')+' \u2
 let gH='<div class="groups-title">'+grpTitle+'</div><div class="groups-grid">';
 Object.keys(GROUPS).forEach(g=>{
   gH+='<div class="grp-box"><div class="grp-hdr">'+(LANG==='es'?'GRUPO':'GROUP')+'\u00A0'+g+'</div>';
-  GROUPS[g].forEach(([iso,ab,nm])=>{gH+=`<div class="grp-team"><div class="fl-wrap"><img class="fl" src="https://flagcdn.com/w80/${iso}.png" alt="${ab}"></div><span class="ab">${ab}</span><span class="nm">${t_team(nm)}</span></div>`});
+  GROUPS[g].forEach(([iso,ab,nm])=>{gH+=`<div class="grp-team${hasFav&&FAV.has(ab)?' fav':''}"><div class="fl-wrap"><img class="fl" src="https://flagcdn.com/w80/${iso}.png" alt="${ab}"></div><span class="ab">${ab}</span><span class="nm">${t_team(nm)}</span></div>`});
   gH+='<div class="grp-matches">';
   GM[g].forEach(s=>{const p=s.split(' ');const tD=fmt24((p[4].includes(':')&&p[5])?p[4].replace(/[ap]$/,''):p[4]);
     gH+=`<div class="gm-row"><span class="gm-mn">#${p[0]}</span><span class="gm-dt">${fmtDt(p[1])}</span><span class="gm-tm">${p[2]} <span style="color:${P.textGold}">v</span> ${p[3]}</span><span class="gm-ti">${tD}${p[5]?'·'+p[5]:''}</span></div>`});
