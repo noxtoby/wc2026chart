@@ -569,7 +569,7 @@ V.forEach((v,vi)=>{
   gh+=`<div class="g-row" style="height:${rh}px">`;
   DD.forEach((d,di)=>{
     const ev=isEv(d,di);const bg=cellBg(v.co,ev);
-    if(!d){gh+=`<div class="g-cell${hasFav&&favDates.has(k)?' fav-day':''}" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}"></div>`;return}
+    if(!d){gh+=`<div class="g-cell${false?' fav-day':''}" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}"></div>`;return}
     const k=(d.getMonth()+1)+'/'+d.getDate();const lk=v.id+'_'+k;const ms=mL[lk];
     gh+=`<div class="g-cell${hasFav&&favDates.has(k)?' fav-day':''}" style="width:${dW[di]}px;height:${rh}px;background-color:${bg}">`;
     if(ms){
