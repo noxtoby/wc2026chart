@@ -95,9 +95,10 @@
 @media print { body { zoom: 1 !important; } }
 
 .mc.fav{box-shadow:inset 0 0 0 3px #c9a830;z-index:8!important}
-.grp-team.fav{outline:3px solid #c9a830;outline-offset:-1px}
+.mc.fav .mc-team-left,.mc.fav .mc-team-right{color:#c9a830!important}
+.grp-team.fav .ab,.grp-team.fav .nm{color:#c9a830!important}
 .g-row.fav-row{background:rgba(201,168,48,0.06)!important}
-.g-cell.fav-day{border-left:2px solid rgba(201,168,48,0.5);border-right:2px solid rgba(201,168,48,0.5)}
+.g-cell.fav-day{}
 .grp-box.fav-grp{outline:3px solid #c9a830;outline-offset:-1px}
 .g-cell.fav-match{outline:3px solid #c9a830;outline-offset:-2px;z-index:2}
 .grp-match-fav{color:#c9a830!important}
@@ -105,9 +106,9 @@
 [data-theme="light"] .d-num.fav-day-hdr,[data-theme="light"] .d-dow.fav-day-hdr{color:#7a5d00!important}
 
 [data-theme="light"] .mc.fav{box-shadow:inset 0 0 0 3px #8a6d00}
-[data-theme="light"] .grp-team.fav{outline-color:#8a6d00}
+[data-theme="light"] .grp-team.fav .ab,[data-theme="light"] .grp-team.fav .nm{color:#7a5d00!important}
 [data-theme="light"] .g-row.fav-row{background:rgba(138,109,0,0.05)!important}
-[data-theme="light"] .g-cell.fav-day{border-left:2px solid rgba(138,109,0,0.4);border-right:2px solid rgba(138,109,0,0.4)}
+
 
 </style>
 </head>
@@ -753,7 +754,7 @@ Object.keys(GROUPS).forEach(g=>{
   GROUPS[g].forEach(([iso,ab,nm])=>{gH+=`<div class="grp-team-block"><div class="grp-team-name">${nm}</div><div class="grp-team-data"><div class="grp-flag-code"><div class="grp-flag-box"><img class="fl" src="https://flagcdn.com/w80/${iso}.png" alt="${ab}"></div><span class="grp-code">${ab}</span></div><span class="st-cell"></span><span class="st-cell"></span><span class="st-cell"></span><span class="st-cell"></span><span class="st-cell"></span><span class="st-cell st-pts"></span></div></div>`});
   gH+='<div class="grp-matches">';
   GM[g].forEach(s=>{const p=s.split(' ');const tD=fmt24((p[4].includes(':')&&p[5])?p[4].replace(/[ap]$/,''):p[4]);
-    gH+=`<div class="gm-row"><span class="gm-mn">#${p[0]}</span><span class="gm-dt">${p[1]}</span><span class="gm-t1">${p[2]}</span><span class="gm-score"><span style="display:inline-block;width:53px;height:60px;border:1.5px solid rgba(200,210,230,0.9);border-radius:3px;background:rgba(245,248,255,0.9)"></span><span style="color:#556;font-size:24px;margin:0 2px">-</span><span style="display:inline-block;width:53px;height:60px;border:1.5px solid rgba(200,210,230,0.9);border-radius:3px;background:rgba(245,248,255,0.9)"></span></span><span class="gm-t2">${p[3]}</span><span class="gm-ti">${tD}${p[5]?'·'+p[5]:''}</span></div>`});
+    gH+=`<div class="gm-row"><span class="gm-mn">#${p[0]}</span><span class="gm-dt">${p[1]}</span><span class="gm-t1 ${hasFav&&FAV.has(p[2])?'grp-match-fav':''}">${p[2]}</span><span class="gm-score"><span style="display:inline-block;width:53px;height:60px;border:1.5px solid rgba(200,210,230,0.9);border-radius:3px;background:rgba(245,248,255,0.9)"></span><span style="color:#556;font-size:24px;margin:0 2px">-</span><span style="display:inline-block;width:53px;height:60px;border:1.5px solid rgba(200,210,230,0.9);border-radius:3px;background:rgba(245,248,255,0.9)"></span></span><span class="gm-t2 ${hasFav&&FAV.has(p[3])?'grp-match-fav':''}">${p[3]}</span><span class="gm-ti">${tD}${p[5]?'·'+p[5]:''}</span></div>`});
   gH+='</div></div>';
 });
 gH+='</div>';gA.innerHTML=gH;
