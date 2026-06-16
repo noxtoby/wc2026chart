@@ -171,7 +171,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       </select>
     </div>
     <div class="config-group">
-      <label id="lbl-fav">Favorite Teams</label>
+      <label id="lbl-fav">Favorite Teams <span style="font-weight:400;opacity:0.6">(optional)</span></label>
       <div class="fav-dropdown" id="fav-dropdown">
         <div class="fav-trigger" onclick="document.getElementById('fav-dropdown').classList.toggle('open')">
           <span id="fav-display">Select teams...</span>
@@ -281,7 +281,7 @@ function getParams() {
 
 function buildURL(p) {
   const base = p.size==='24x36' ? 'poster-vertical.html' : 'poster.html';
-  return `${base}?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}&size=${p.size}${p.clock==='24'&&!['ET','CT','MT','PT','BST'].includes(p.tz)?'&clock=24':''}${p.lang&&p.lang!=='en'?'&lang='+p.lang:''}${p.datefmt&&p.datefmt!=='auto'?'&datefmt='+p.datefmt:''}${p.fav?'&fav='+p.fav:''}`;
+  return `${base}?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}&size=${p.size}${p.clock?'&clock='+p.clock:''}${p.lang&&p.lang!=='en'?'&lang='+p.lang:''}${p.datefmt&&p.datefmt!=='auto'?'&datefmt='+p.datefmt:''}${p.fav?'&fav='+p.fav:''}`;
 }
 
 function update() {
@@ -466,7 +466,7 @@ function applyLang(){
       if(b.textContent.includes('Download PNG'))b.textContent='🖼 '+_es['Download PNG'];
       if(b.textContent.includes('Download HTML'))b.textContent='📄 '+_es['Download HTML'];
     });
-    var favLbl=document.getElementById('lbl-fav');if(favLbl)favLbl.textContent=_es['Favorite Teams'];
+    var favLbl=document.getElementById('lbl-fav');if(favLbl)favLbl.innerHTML='Equipos Favoritos <span style="font-weight:400;opacity:0.6">(opcional)</span>';
     var favDisp=document.getElementById('fav-display');if(favDisp&&favDisp.textContent==='Select teams...')favDisp.textContent=_es['Select teams...'];
     // Translate favorite team names
     document.querySelectorAll('.fav-item span').forEach(s=>{if(_esTeams[s.textContent])s.textContent=_esTeams[s.textContent]});
