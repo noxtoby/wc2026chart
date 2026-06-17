@@ -36,7 +36,7 @@
 .fav-item:hover{background:rgba(201,168,48,0.08)}
 .fav-item input{accent-color:var(--gold);width:14px;height:14px;cursor:pointer;margin:1px 5px 0 0;flex-shrink:0}
 .fav-flag{width:22px;height:15px;object-fit:contain;border-radius:1px;margin-right:5px;flex-shrink:0}
-.fav-item span{flex:1}
+.fav-item span{flex:1;position:relative;top:-3px}
 .fav-dropdown{position:relative}
 .fav-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;padding:11px 14px;background:var(--bg);color:var(--text-dim);border:1px solid var(--card-border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:15px;cursor:pointer}
 .fav-panel{display:none;position:absolute;top:100%;left:0;right:0;max-height:320px;overflow-y:auto;background:var(--card);border:1px solid var(--card-border);border-radius:0 0 7px 7px;z-index:10;margin-top:-1px}
@@ -243,7 +243,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   <button class="btn btn-outline" id="btn-print" onclick="printPoster()">🖨 Print</button>
   <button class="btn btn-outline" id="btn-pdf" onclick="downloadPDF()">📥 Download PDF</button>
   <button class="btn btn-outline" id="btn-png" onclick="downloadPNG()">🖼 Download PNG</button>
-  <a class="btn btn-outline" id="btn-download" href="#" download>📄 Download HTML</a>
 </div>
 
 <div class="preview-wrap">
@@ -290,7 +289,6 @@ function update() {
   const url = buildURL(p);
   
   document.getElementById('btn-open').href = url;
-  document.getElementById('btn-download').href = 'poster.html';
   
   const usZones = ['ET','CT','MT','PT'];
   if (p.lang === 'es') {
@@ -325,12 +323,16 @@ function update() {
 
 function updatePrintInstructions() {
   const sz = getParams().size;
+  const theme = getParams().theme;
   const el = document.getElementById('print-instructions');
   if (!el) return;
+  const themeNote = theme === 'dark' ? '<p>💡 <strong>Tip:</strong> Switch to the <strong>Light</strong> theme above for a printer-friendly version that uses less ink.</p>' : '';
   if (sz === '22x17') {
-    el.innerHTML = '<p><strong>Save as PDF:</strong> Click \u201cDownload PDF\u201d to generate a high-resolution PDF file directly.</p><p><strong>Home printer:</strong> Click "Open Poster", then Ctrl+P. Set paper to <strong>Letter (8.5x11)</strong>, orientation <strong>Landscape</strong>, scale to <strong>Fit</strong>, and enable <strong>Background graphics</strong>.</p><p><strong>Print shop:</strong> Download the HTML for large format printing at full 22x17 size.</p>';
+    el.innerHTML = '<p><strong>Home printer:</strong> Click \u201cOpen Poster\u201d, then Ctrl+P (or \u2318P). Set paper to <strong>Letter</strong>, orientation <strong>Landscape</strong>, scale to <strong>Fit</strong>, and enable <strong>Background graphics</strong>.</p><p><strong>Poster print:</strong> For a large wall poster, select the <strong>24\u00d716\u2033</strong> or <strong>24\u00d736\u2033</strong> size above, then download the PDF and take it to a print shop. They can print at the native size or scale to fit your preferred paper.</p>' + themeNote;
+  } else if (sz === '24x36') {
+    el.innerHTML = '<p><strong>Poster print:</strong> Download the PDF and take it to a print shop. They can print at the native 24\u00d736\u2033 size or scale to fit your preferred paper.</p><p><strong>Home printer:</strong> Click \u201cOpen Poster\u201d, then Ctrl+P (or \u2318P). Scale to fit your paper and enable <strong>Background graphics</strong>.</p>' + themeNote;
   } else {
-    el.innerHTML = '<p><strong>Save as PDF:</strong> Click \u201cDownload PDF\u201d to generate a high-resolution PDF file directly.</p><p><strong>Print shop recommended:</strong> Download the HTML and bring it to a print shop for full-size ' + sz.replace('x','\u00d7') + ' output.</p><p><strong>Home printer:</strong> Click "Open Poster", then Ctrl+P. Scale to fit, landscape, enable Background graphics.</p>';
+    el.innerHTML = '<p><strong>Poster print:</strong> Download the PDF and take it to a print shop. They can print at the native ' + sz.replace('x','\u00d7') + '\u2033 size or scale to fit your preferred paper.</p><p><strong>Home printer:</strong> Click \u201cOpen Poster\u201d, then Ctrl+P (or \u2318P). Scale to fit your paper, landscape orientation, and enable <strong>Background graphics</strong>.</p>' + themeNote;
   }
 }
 
@@ -407,7 +409,7 @@ const _es = {
   '24 × 16″ (3:2 poster)':'24 × 16″ (póster 3:2)',
   '24 × 36″ (Vertical poster)':'24 × 36″ (Póster vertical)',
   'Open Poster':'Abrir Póster','Print':'Imprimir',
-  'Download PDF':'Descargar PDF','Download PNG':'Descargar PNG','Download HTML':'Descargar HTML',
+  'Download PDF':'Descargar PDF','Download PNG':'Descargar PNG',
   'Live Preview':'Vista Previa','Favorite Teams':'Equipos Favoritos','Select teams...':'Selecciona equipos...','Printing Tips':'Consejos de Impresión',
   'Loading preview…':'Cargando vista previa…'
 };
@@ -464,7 +466,6 @@ function applyLang(){
       if(b.textContent.includes('Print')&&!b.textContent.includes('PDF'))b.textContent='🖨 '+_es['Print'];
       if(b.textContent.includes('Download PDF'))b.textContent='📥 '+_es['Download PDF'];
       if(b.textContent.includes('Download PNG'))b.textContent='🖼 '+_es['Download PNG'];
-      if(b.textContent.includes('Download HTML'))b.textContent='📄 '+_es['Download HTML'];
     });
     var favLbl=document.getElementById('lbl-fav');if(favLbl)favLbl.innerHTML='Equipos Favoritos <span style="font-weight:400;opacity:0.6">(opcional)</span>';
     var favDisp=document.getElementById('fav-display');if(favDisp&&favDisp.textContent==='Select teams...')favDisp.textContent=_es['Select teams...'];
