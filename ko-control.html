@@ -82,7 +82,7 @@ BEL:'Belgium',EGY:'Egypt',IRN:'Iran',NZL:'New Zealand',ESP:'Spain',CPV:'Cape Ver
 FRA:'France',SEN:'Senegal',IRQ:'Iraq',NOR:'Norway',ARG:'Argentina',ALG:'Algeria',AUT:'Austria',JOR:'Jordan',
 POR:'Portugal',COD:'DR Congo',UZB:'Uzbekistan',COL:'Colombia',ENG:'England',CRO:'Croatia',GHA:'Ghana',PAN:'Panama'};
 
-// Bracket graph, mirrored from poster-KO.html. R32 = real teams; later rounds = feeder codes.
+// Bracket graph, mirrored from poster.html. R32 = real teams; later rounds = feeder codes.
 const BR=[
  {n:73,r:'R32',a:'RSA',b:'CAN'},{n:74,r:'R32',a:'GER',b:'PAR'},{n:75,r:'R32',a:'NED',b:'MAR'},{n:76,r:'R32',a:'BRA',b:'JPN'},
  {n:77,r:'R32',a:'FRA',b:'SWE'},{n:78,r:'R32',a:'CIV',b:'NOR'},{n:79,r:'R32',a:'MEX',b:'ECU'},{n:80,r:'R32',a:'ENG',b:'COD'},
@@ -167,7 +167,7 @@ function paramStr(){
 }
 function updateOut(){
   const r=paramStr();
-  const url='poster-KO.html?size=24x16'+(r?'&r='+r:'');
+  const url='poster.html?size=24x16'+(r?'&r='+r:'');
   document.getElementById('url').value=url;
   document.getElementById('open').href=url;
   const lit='{'+Object.keys(picks).map(Number).sort((x,y)=>x-y).map(n=>n+":'"+picks[n]+"'").join(',')+'}';

@@ -105,7 +105,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   <p class="sub">Free printable wall chart — all 104 matches, venues, times, TV channels, knockout bracket, and group details.</p>
 </div>
 
-<a class="spotlight" id="btn-ko-spotlight" href="poster-KO.html?size=24x16" target="_blank" rel="noopener">
+<a class="spotlight" id="btn-ko-spotlight" href="poster.html?size=24x16" target="_blank" rel="noopener">
   <span class="badge"><span class="dot">●</span> LIVE</span>
   <span class="stext">
     <strong>The knockouts are here — watch the bracket fill in</strong>
@@ -303,7 +303,7 @@ function buildURL(p) {
 }
 
 function buildKOURL(p) {
-  return `poster-KO.html?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}&size=24x16${document.getElementById('clock-toggle').style.display!=='none'?'&clock='+p.clock:''}${p.lang&&p.lang!=='en'?'&lang='+p.lang:''}${p.datefmt&&p.datefmt!=='auto'?'&datefmt='+p.datefmt:''}${p.fav?'&fav='+p.fav:''}`;
+  return `poster.html?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}&size=24x16${document.getElementById('clock-toggle').style.display!=='none'?'&clock='+p.clock:''}${p.lang&&p.lang!=='en'?'&lang='+p.lang:''}${p.datefmt&&p.datefmt!=='auto'?'&datefmt='+p.datefmt:''}${p.fav?'&fav='+p.fav:''}`;
 }
 
 function update() {
