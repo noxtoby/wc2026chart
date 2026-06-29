@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -120,7 +120,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
       <label>Color Scheme</label>
       <select id="sel-theme" onchange="update()">
         <option value="dark">Dark (screen / poster print)</option>
-        <option value="light">Light (printer-friendly)</option>
+        <option value="light" selected>Light (printer-friendly)</option>
       </select>
     </div>
     <div class="config-group">
@@ -338,7 +338,7 @@ function update() {
   const overlay = document.getElementById('overlay');
   overlay.classList.remove('hidden');
   overlay.textContent = 'Loading preview\u2026';
-  iframe.src = url;
+  iframe.src = url + '&_pv=' + Date.now();// cache-bust: preview must always reflect the live poster.html
   scalePreview();
   updatePrintInstructions();
   _prevTZ = p.tz;
