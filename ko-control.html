@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WC2026 Knockout Filler</title>
+<style>
+  :root{--bg:#11141c;--panel:#1a1f2b;--line:#2b3242;--text:#e8ecf5;--dim:#8a93a8;--gold:#c9a830;--green:#3fb56b;--accent:#4a90e2}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,Segoe UI,Roboto,sans-serif;padding:24px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  p.sub{color:var(--dim);margin:0 0 20px}
+  .round{margin:18px 0 6px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;border-bottom:1px solid var(--line);padding-bottom:5px}
+  .m{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px}
+  .m:nth-child(odd){background:rgba(255,255,255,.02)}
+  .m.done{background:rgba(63,181,107,.08)}
+  .mn{width:42px;color:var(--dim);font-variant-numeric:tabular-nums;flex:none}
+  .vs{flex:1;min-width:0}
+  .vs b{font-weight:600}
+  .vs .tbd{color:var(--dim);font-style:italic}
+  select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:6px 8px;min-width:150px;font:inherit}
+  select:disabled{opacity:.4}
+  .tick{width:18px;flex:none;color:var(--green);font-weight:700;text-align:center}
+  .out{margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .out h2{font-size:14px;margin:0 0 10px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+  .row{display:flex;gap:8px;align-items:center;margin:8px 0}
+  input.url{flex:1;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:8px 10px;font:13px ui-monospace,Menlo,monospace}
+  button{background:var(--accent);color:#fff;border:0;border-radius:6px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+  a.open{color:var(--accent);text-decoration:none;font-weight:600}
+  code.lit{display:block;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px;font:13px ui-monospace,Menlo,monospace;color:var(--gold);word-break:break-all;margin-top:6px}
+  .hint{color:var(--dim);font-size:12.5px;margin-top:4px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--dim)}
+  label input{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:7px 9px;font:13px ui-monospace,Menlo,monospace}
+  #pub-status.ok{color:var(--green)} #pub-status.err{color:#e2674a}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>World Cup 2026 — Knockout Filler</h1>
+  <p class="sub">Pick the winner of each match. Later rounds fill in automatically as their feeders are decided.</p>
+  <div id="board"></div>
+
+  <div class="out">
+    <h2>Put it into the poster</h2>
+    <div class="row">
+      <input class="url" id="url" readonly>
+      <button id="copy">Copy</button>
+      <a class="open" id="open" target="_blank" rel="noopener">Open ↗</a>
+    </div>
+    <div class="hint">A shareable link that renders the filled bracket on the spot — handy for a quick preview.</div>
+    <h2 style="margin-top:18px">Publish to everyone (results.js)</h2>
+    <div class="hint" style="margin-bottom:8px">This is the file the live site reads. Download it and commit it to your repo root (replacing the old one) and <b>wc2026chart.github.io</b> updates for every visitor — no link needed.</div>
+    <code class="lit" id="lit"></code>
+    <div class="row"><button id="dl">Download results.js</button></div>
+
+    <h2 style="margin-top:18px">One-click publish to GitHub</h2>
+    <div class="hint" style="margin-bottom:10px">Commits <code style="color:var(--gold)">results.js</code> straight to your repo — enter results, click Publish, the live site updates in under a minute. Your token is kept in this browser only.</div>
+    <div class="grid2">
+      <label>Repo (owner/name)<input id="gh-repo" value="wc2026chart/wc2026chart.github.io" autocomplete="off" spellcheck="false"></label>
+      <label>Branch<input id="gh-branch" value="main" autocomplete="off" spellcheck="false"></label>
+      <label>File path<input id="gh-path" value="results.js" autocomplete="off" spellcheck="false"></label>
+      <label>Fine-grained token<input id="gh-token" type="password" placeholder="github_pat_…" autocomplete="off"></label>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button id="pub">Publish to GitHub</button>
+      <span id="pub-status" class="hint" style="margin:0"></span>
+    </div>
+    <div class="hint" style="margin-top:8px">Token: GitHub → Settings → Developer settings → Fine-grained tokens → restrict to this one repo, permission <b>Contents: Read and write</b>.</div>
+  </div>
+</div>
+
+<script src="results.js"></script>
+<script>
+// Full team names (advancing teams + the rest)
+const NAME={MEX:'Mexico',RSA:'South Africa',KOR:'S. Korea',CZE:'Czechia',CAN:'Canada',BIH:'Bosnia & Hz.',QAT:'Qatar',SUI:'Switzerland',
+BRA:'Brazil',MAR:'Morocco',HAI:'Haiti',SCO:'Scotland',USA:'United States',PAR:'Paraguay',AUS:'Australia',TUR:'Türkiye',
+GER:'Germany',CUR:'Curaçao',CIV:'Ivory Coast',ECU:'Ecuador',NED:'Netherlands',JPN:'Japan',SWE:'Sweden',TUN:'Tunisia',
+BEL:'Belgium',EGY:'Egypt',IRN:'Iran',NZL:'New Zealand',ESP:'Spain',CPV:'Cape Verde',KSA:'Saudi Arabia',URU:'Uruguay',
+FRA:'France',SEN:'Senegal',IRQ:'Iraq',NOR:'Norway',ARG:'Argentina',ALG:'Algeria',AUT:'Austria',JOR:'Jordan',
+POR:'Portugal',COD:'DR Congo',UZB:'Uzbekistan',COL:'Colombia',ENG:'England',CRO:'Croatia',GHA:'Ghana',PAN:'Panama'};
+
+// Bracket graph, mirrored from poster-KO.html. R32 = real teams; later rounds = feeder codes.
+const BR=[
+ {n:73,r:'R32',a:'RSA',b:'CAN'},{n:74,r:'R32',a:'GER',b:'PAR'},{n:75,r:'R32',a:'NED',b:'MAR'},{n:76,r:'R32',a:'BRA',b:'JPN'},
+ {n:77,r:'R32',a:'FRA',b:'SWE'},{n:78,r:'R32',a:'CIV',b:'NOR'},{n:79,r:'R32',a:'MEX',b:'ECU'},{n:80,r:'R32',a:'ENG',b:'COD'},
+ {n:81,r:'R32',a:'USA',b:'BIH'},{n:82,r:'R32',a:'BEL',b:'SEN'},{n:83,r:'R32',a:'POR',b:'CRO'},{n:84,r:'R32',a:'ESP',b:'AUT'},
+ {n:85,r:'R32',a:'SUI',b:'ALG'},{n:86,r:'R32',a:'ARG',b:'CPV'},{n:87,r:'R32',a:'COL',b:'GHA'},{n:88,r:'R32',a:'AUS',b:'EGY'},
+ {n:89,r:'R16',a:'W74',b:'W77'},{n:90,r:'R16',a:'W73',b:'W75'},{n:91,r:'R16',a:'W76',b:'W78'},{n:92,r:'R16',a:'W79',b:'W80'},
+ {n:93,r:'R16',a:'W83',b:'W84'},{n:94,r:'R16',a:'W81',b:'W82'},{n:95,r:'R16',a:'W86',b:'W88'},{n:96,r:'R16',a:'W85',b:'W87'},
+ {n:97,r:'QF',a:'W89',b:'W90'},{n:98,r:'QF',a:'W93',b:'W94'},{n:99,r:'QF',a:'W91',b:'W92'},{n:100,r:'QF',a:'W95',b:'W96'},
+ {n:101,r:'SF',a:'W97',b:'W98'},{n:102,r:'SF',a:'W99',b:'W100'},
+ {n:103,r:'3RD',a:'L101',b:'L102'},{n:104,r:'FIN',a:'W101',b:'W102'}
+];
+const ROUND={R32:'Round of 32',R16:'Round of 16',QF:'Quarterfinals',SF:'Semifinals','3RD':'Third-Place Match',FIN:'Final'};
+const BYN={}; BR.forEach(m=>BYN[m.n]=m);
+
+// Known result baked into the poster as the starting point.
+let picks=Object.assign({73:'CAN'}, (window.WC_RESULTS||{}));
+
+// Resolve every match's two participants from the current picks.
+function resolve(){
+  const win={},los={},part={};
+  const f=c=>{let m; if(m=/^W(\d+)$/.exec(c))return win[+m[1]]; if(m=/^L(\d+)$/.exec(c))return los[+m[1]]; return c;};
+  for(const m of BR){
+    const a=f(m.a), b=f(m.b);
+    part[m.n]=[a,b];
+    const w=picks[m.n];
+    if(w && a && b && (w===a||w===b)){ win[m.n]=w; los[m.n]=(w===a?b:a); }
+  }
+  return part;
+}
+// Drop any pick whose match is no longer fully known or whose winner is no longer a participant.
+function clean(){
+  let changed=true;
+  while(changed){ changed=false; const p=resolve();
+    for(const n of Object.keys(picks)){ const [a,b]=p[+n];
+      if(!a||!b||(picks[n]!==a&&picks[n]!==b)){ delete picks[n]; changed=true; } } }
+}
+function label(code,resolved){
+  if(resolved) return NAME[resolved]||resolved;
+  let m; if(m=/^W(\d+)$/.exec(code)) return 'Winner #'+m[1];
+  if(m=/^L(\d+)$/.exec(code)) return 'Loser #'+m[1];
+  return code;
+}
+
+function render(){
+  clean();
+  const part=resolve();
+  const board=document.getElementById('board');
+  let html='', lastR='';
+  for(const m of BR){
+    if(m.r!==lastR){ html+=`<div class="round">${ROUND[m.r]}</div>`; lastR=m.r; }
+    const [a,b]=part[m.n];
+    const ready=!!a && !!b;
+    const win=picks[m.n];
+    let opts=`<option value="">— winner —</option>`;
+    if(ready){
+      opts+=`<option value="${a}"${win===a?' selected':''}>${NAME[a]||a}</option>`;
+      opts+=`<option value="${b}"${win===b?' selected':''}>${NAME[b]||b}</option>`;
+    }
+    const left = win? (win===a?'<b>'+(NAME[a]||a)+'</b>':label(m.a,a)) : label(m.a,a);
+    const right= win? (win===b?'<b>'+(NAME[b]||b)+'</b>':label(m.b,b)) : label(m.b,b);
+    const txt = ready
+      ? `${win===a?'<b>':''}${NAME[a]||a}${win===a?'</b>':''} <span class="tbd">v</span> ${win===b?'<b>':''}${NAME[b]||b}${win===b?'</b>':''}`
+      : `<span class="tbd">${label(m.a,a)} v ${label(m.b,b)}</span>`;
+    html+=`<div class="m${win?' done':''}">
+      <div class="mn">#${m.n}</div>
+      <div class="vs">${txt}</div>
+      <select data-n="${m.n}"${ready?'':' disabled'}>${opts}</select>
+      <div class="tick">${win?'✓':''}</div>
+    </div>`;
+  }
+  board.innerHTML=html;
+  board.querySelectorAll('select').forEach(s=>s.onchange=()=>{
+    const n=+s.dataset.n, v=s.value;
+    if(v) picks[n]=v; else delete picks[n];
+    render();
+  });
+  updateOut();
+}
+
+function paramStr(){
+  return Object.keys(picks).map(Number).sort((x,y)=>x-y).map(n=>n+':'+picks[n]).join(',');
+}
+function updateOut(){
+  const r=paramStr();
+  const url='poster-KO.html?size=24x16'+(r?'&r='+r:'');
+  document.getElementById('url').value=url;
+  document.getElementById('open').href=url;
+  const lit='{'+Object.keys(picks).map(Number).sort((x,y)=>x-y).map(n=>n+":'"+picks[n]+"'").join(',')+'}';
+  window._resultsJS='// WC2026 knockout results — match number : winning team code.\nwindow.WC_RESULTS = '+lit+';\n';
+  document.getElementById('lit').textContent='window.WC_RESULTS = '+lit+';';
+}
+document.getElementById('dl').onclick=()=>{
+  const blob=new Blob([window._resultsJS],{type:'text/javascript'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='results.js';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+};
+document.getElementById('copy').onclick=()=>{
+  const i=document.getElementById('url'); i.select();
+  navigator.clipboard?.writeText(i.value).catch(()=>document.execCommand('copy'));
+  const b=document.getElementById('copy'); b.textContent='Copied'; setTimeout(()=>b.textContent='Copy',1200);
+};
+// ---- GitHub publish ----
+const LS={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+['gh-repo','gh-branch','gh-path','gh-token'].forEach(id=>{
+  const el=document.getElementById(id); const v=LS.get(id); if(v!==null)el.value=v;
+  el.addEventListener('change',()=>LS.set(id,el.value));
+});
+function status(msg,cls){const s=document.getElementById('pub-status');s.textContent=msg;s.className='hint '+(cls||'');}
+async function publish(){
+  const repo=document.getElementById('gh-repo').value.trim();
+  const branch=document.getElementById('gh-branch').value.trim()||'main';
+  const path=document.getElementById('gh-path').value.trim()||'results.js';
+  const token=document.getElementById('gh-token').value.trim();
+  ['gh-repo','gh-branch','gh-path','gh-token'].forEach(id=>LS.set(id,document.getElementById(id).value));
+  if(!repo.includes('/')||!token){status('Enter a repo (owner/name) and a token.','err');return;}
+  const api=`https://api.github.com/repos/${repo}/contents/${path}`;
+  const headers={Authorization:'Bearer '+token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  const btn=document.getElementById('pub'); btn.disabled=true; status('Publishing…');
+  try{
+    let sha;
+    const g=await fetch(api+'?ref='+encodeURIComponent(branch),{headers});
+    if(g.ok){sha=(await g.json()).sha;} else if(g.status!==404){throw new Error('Read failed ('+g.status+')');}
+    const body={message:'Update knockout results ('+(Object.keys(picks).length)+' set)',
+      content:btoa(unescape(encodeURIComponent(window._resultsJS))),branch};
+    if(sha)body.sha=sha;
+    const r=await fetch(api,{method:'PUT',headers,body:JSON.stringify(body)});
+    if(!r.ok){const t=await r.json().catch(()=>({})); throw new Error((t.message||'HTTP '+r.status));}
+    const j=await r.json();
+    status('Published ✓  live in ~1 min'+(j.commit&&j.commit.html_url?'':''),'ok');
+  }catch(e){status('Error: '+e.message,'err');}
+  finally{btn.disabled=false;}
+}
+document.getElementById('pub').onclick=publish;
+render();
+</script>
+</body>
+</html>

@@ -36,7 +36,7 @@
 .fav-item:hover{background:rgba(201,168,48,0.08)}
 .fav-item input{accent-color:var(--gold);width:14px;height:14px;cursor:pointer;margin:1px 5px 0 0;flex-shrink:0}
 .fav-flag{width:22px;height:15px;object-fit:contain;border-radius:1px;margin-right:5px;flex-shrink:0}
-.fav-item span{flex:1}
+.fav-item span{flex:1;position:relative;top:-3px}
 .fav-dropdown{position:relative}
 .fav-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;padding:11px 14px;background:var(--bg);color:var(--text-dim);border:1px solid var(--card-border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:15px;cursor:pointer}
 .fav-panel{display:none;position:absolute;top:100%;left:0;right:0;max-height:320px;overflow-y:auto;background:var(--card);border:1px solid var(--card-border);border-radius:0 0 7px 7px;z-index:10;margin-top:-1px}
@@ -77,6 +77,16 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
 .preview-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-dim);background:rgba(10,12,24,0.7);transition:opacity 0.3s;cursor:pointer;z-index:2}
 .preview-overlay.hidden{opacity:0}
 
+.spotlight{display:flex;align-items:center;gap:18px;max-width:880px;margin:28px auto 0;padding:18px 22px;background:linear-gradient(135deg,rgba(201,168,48,0.16),var(--card));border:1px solid var(--gold);border-radius:12px;text-decoration:none;color:var(--text);box-shadow:0 4px 20px rgba(201,168,48,0.12);transition:box-shadow .2s,transform .2s}
+.spotlight:hover{box-shadow:0 10px 32px rgba(201,168,48,0.26);transform:translateY(-1px)}
+.spotlight .badge{flex:none;align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:1px;color:#fff;background:#c0392b;padding:4px 10px;border-radius:20px}
+.spotlight .badge .dot{animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.spotlight .stext{flex:1;display:flex;flex-direction:column;gap:3px}
+.spotlight .stext strong{font-size:16px;font-weight:800;color:var(--gold)}
+.spotlight .stext span{font-size:13px;color:var(--text-dim);line-height:1.45}
+.spotlight .scta{flex:none;font-weight:700;color:var(--gold);white-space:nowrap}
+@media(max-width:560px){.spotlight{flex-direction:column;align-items:flex-start;gap:11px}}
 .how-to{max-width:880px;margin:0 auto 40px;padding:0 20px}
 .how-to h2{font-size:18px;color:var(--gold);margin-bottom:12px;font-weight:600;letter-spacing:1px}
 .how-to p{color:var(--text-dim);font-size:14px;line-height:1.7;margin-bottom:8px}
@@ -94,6 +104,15 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="hosts"><span class="ca">CANADA</span> <span class="dot">•</span> <span class="mx">MEXICO</span> <span class="dot">•</span> <span class="us">USA</span></div>
   <p class="sub">Free printable wall chart — all 104 matches, venues, times, TV channels, knockout bracket, and group details.</p>
 </div>
+
+<a class="spotlight" id="btn-ko-spotlight" href="poster-KO.html?size=24x16" target="_blank" rel="noopener">
+  <span class="badge"><span class="dot">●</span> LIVE</span>
+  <span class="stext">
+    <strong>The knockouts are here — watch the bracket fill in</strong>
+    <span>A 24×16″ wall chart that updates automatically as teams advance. Round of 32 is set — Round of 16 next.</span>
+  </span>
+  <span class="scta">Open live chart →</span>
+</a>
 
 <div class="config">
   <div class="config-grid">
@@ -243,7 +262,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-
   <button class="btn btn-outline" id="btn-print" onclick="printPoster()">🖨 Print</button>
   <button class="btn btn-outline" id="btn-pdf" onclick="downloadPDF()">📥 Download PDF</button>
   <button class="btn btn-outline" id="btn-png" onclick="downloadPNG()">🖼 Download PNG</button>
-  <a class="btn btn-outline" id="btn-download" href="#" download>📄 Download HTML</a>
 </div>
 
 <div class="preview-wrap">
@@ -284,13 +302,17 @@ function buildURL(p) {
   return `${base}?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}&size=${p.size}${document.getElementById('clock-toggle').style.display!=='none'?'&clock='+p.clock:''}${p.lang&&p.lang!=='en'?'&lang='+p.lang:''}${p.datefmt&&p.datefmt!=='auto'?'&datefmt='+p.datefmt:''}${p.fav?'&fav='+p.fav:''}`;
 }
 
+function buildKOURL(p) {
+  return `poster-KO.html?tz=${encodeURIComponent(p.tz)}&theme=${p.theme}&size=24x16${document.getElementById('clock-toggle').style.display!=='none'?'&clock='+p.clock:''}${p.lang&&p.lang!=='en'?'&lang='+p.lang:''}${p.datefmt&&p.datefmt!=='auto'?'&datefmt='+p.datefmt:''}${p.fav?'&fav='+p.fav:''}`;
+}
+
 function update() {
   const p = getParams();
   document.documentElement.setAttribute('data-theme', p.theme);
   const url = buildURL(p);
   
   document.getElementById('btn-open').href = url;
-  document.getElementById('btn-download').href = 'poster.html';
+  document.getElementById('btn-ko-spotlight').href = buildKOURL(p);
   
   const usZones = ['ET','CT','MT','PT'];
   if (p.lang === 'es') {
@@ -325,12 +347,16 @@ function update() {
 
 function updatePrintInstructions() {
   const sz = getParams().size;
+  const theme = getParams().theme;
   const el = document.getElementById('print-instructions');
   if (!el) return;
+  const themeNote = theme === 'dark' ? '<p>💡 <strong>Tip:</strong> Switch to the <strong>Light</strong> theme above for a printer-friendly version that uses less ink.</p>' : '';
   if (sz === '22x17') {
-    el.innerHTML = '<p><strong>Save as PDF:</strong> Click \u201cDownload PDF\u201d to generate a high-resolution PDF file directly.</p><p><strong>Home printer:</strong> Click "Open Poster", then Ctrl+P. Set paper to <strong>Letter (8.5x11)</strong>, orientation <strong>Landscape</strong>, scale to <strong>Fit</strong>, and enable <strong>Background graphics</strong>.</p><p><strong>Print shop:</strong> Download the HTML for large format printing at full 22x17 size.</p>';
+    el.innerHTML = '<p><strong>Home printer:</strong> Click \u201cOpen Poster\u201d, then Ctrl+P (or \u2318P). Set paper to <strong>Letter</strong>, orientation <strong>Landscape</strong>, scale to <strong>Fit</strong>, and enable <strong>Background graphics</strong>.</p><p><strong>Poster print:</strong> For a large wall poster, select the <strong>24\u00d716\u2033</strong> or <strong>24\u00d736\u2033</strong> size above, then download the PDF and take it to a print shop. They can print at the native size or scale to fit your preferred paper.</p>' + themeNote;
+  } else if (sz === '24x36') {
+    el.innerHTML = '<p><strong>Poster print:</strong> Download the PDF and take it to a print shop. They can print at the native 24\u00d736\u2033 size or scale to fit your preferred paper.</p><p><strong>Home printer:</strong> Click \u201cOpen Poster\u201d, then Ctrl+P (or \u2318P). Scale to fit your paper and enable <strong>Background graphics</strong>.</p>' + themeNote;
   } else {
-    el.innerHTML = '<p><strong>Save as PDF:</strong> Click \u201cDownload PDF\u201d to generate a high-resolution PDF file directly.</p><p><strong>Print shop recommended:</strong> Download the HTML and bring it to a print shop for full-size ' + sz.replace('x','\u00d7') + ' output.</p><p><strong>Home printer:</strong> Click "Open Poster", then Ctrl+P. Scale to fit, landscape, enable Background graphics.</p>';
+    el.innerHTML = '<p><strong>Poster print:</strong> Download the PDF and take it to a print shop. They can print at the native ' + sz.replace('x','\u00d7') + '\u2033 size or scale to fit your preferred paper.</p><p><strong>Home printer:</strong> Click \u201cOpen Poster\u201d, then Ctrl+P (or \u2318P). Scale to fit your paper, landscape orientation, and enable <strong>Background graphics</strong>.</p>' + themeNote;
   }
 }
 
@@ -407,7 +433,7 @@ const _es = {
   '24 × 16″ (3:2 poster)':'24 × 16″ (póster 3:2)',
   '24 × 36″ (Vertical poster)':'24 × 36″ (Póster vertical)',
   'Open Poster':'Abrir Póster','Print':'Imprimir',
-  'Download PDF':'Descargar PDF','Download PNG':'Descargar PNG','Download HTML':'Descargar HTML',
+  'Download PDF':'Descargar PDF','Download PNG':'Descargar PNG',
   'Live Preview':'Vista Previa','Favorite Teams':'Equipos Favoritos','Select teams...':'Selecciona equipos...','Printing Tips':'Consejos de Impresión',
   'Loading preview…':'Cargando vista previa…'
 };
@@ -464,7 +490,6 @@ function applyLang(){
       if(b.textContent.includes('Print')&&!b.textContent.includes('PDF'))b.textContent='🖨 '+_es['Print'];
       if(b.textContent.includes('Download PDF'))b.textContent='📥 '+_es['Download PDF'];
       if(b.textContent.includes('Download PNG'))b.textContent='🖼 '+_es['Download PNG'];
-      if(b.textContent.includes('Download HTML'))b.textContent='📄 '+_es['Download HTML'];
     });
     var favLbl=document.getElementById('lbl-fav');if(favLbl)favLbl.innerHTML='Equipos Favoritos <span style="font-weight:400;opacity:0.6">(opcional)</span>';
     var favDisp=document.getElementById('fav-display');if(favDisp&&favDisp.textContent==='Select teams...')favDisp.textContent=_es['Select teams...'];
