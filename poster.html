@@ -833,7 +833,7 @@ const pdfStatus=document.getElementById('pdf-status');
 
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
 
-function svgBracketToCanvas(svgEl){
+async function svgBracketToCanvas(svgEl){
   const w=parseInt(svgEl.getAttribute('width'));
   const vb=svgEl.getAttribute('viewBox').split(' ').map(Number);
   const vbW=vb[2],vbH=vb[3];
@@ -866,6 +866,17 @@ function svgBracketToCanvas(svgEl){
     ctx.lineWidth=parseFloat(ln.getAttribute('stroke-width'));
     ctx.stroke();
   });
+  // Draw all images (flags) — CORS-load so the export canvas isn't tainted
+  const _imgs=[...svgEl.querySelectorAll('image')];
+  await Promise.all(_imgs.map(im=>new Promise(res=>{
+    let href=im.getAttribute('href')||im.getAttribute('xlink:href');
+    if(!href){res();return}
+    const ix=parseFloat(im.getAttribute('x')),iy=parseFloat(im.getAttribute('y')),iw=parseFloat(im.getAttribute('width')),ih=parseFloat(im.getAttribute('height'));
+    const tmp=new Image();tmp.crossOrigin='anonymous';
+    tmp.onload=()=>{try{ctx.drawImage(tmp,ix,iy,iw,ih)}catch(e){}res()};
+    tmp.onerror=()=>res();
+    tmp.src=href+(href.indexOf('?')<0?'?':'&')+'cors=1';
+  })));
   // Draw all text
   svgEl.querySelectorAll('text').forEach(txt=>{
     const x=parseFloat(txt.getAttribute('x'));
@@ -903,7 +914,7 @@ async function generatePDF(){
     pdfBar.style.width='45%';pdfStatus.textContent='Converting bracket\u2026';
     // Convert SVG bracket to canvas
     const svgs=[...document.querySelectorAll('#grid-area svg')];
-    svgs.forEach(s=>svgBracketToCanvas(s));
+    for(const s of svgs){await svgBracketToCanvas(s);}
     // Ensure no zoom
     document.body.style.zoom='1';
     pdfBar.style.width='55%';pdfStatus.textContent='Rendering poster\u2026';
