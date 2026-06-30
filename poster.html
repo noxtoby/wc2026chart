@@ -732,8 +732,9 @@ function buildBH(seeds,matches,x0,y0,dir,sfBias){
     for(let i=0;i<prev.length;i+=2){
       const m=(prev[i]+prev[i+1])/2+([8,10,6][ri]||0);nxt.push(m);// per-round absolute drop, propagates
       bLn(x,prev[i],x,prev[i+1]);bLn(x,m,x+dir*bLL,m);
-      bTxt(x-dir*11,(prev[i]+prev[i+1])/2+([0,-0.25,-0.15][ri]||0)*(prev[i+1]-prev[i]),'#'+matches[ri][i/2],13,bTC,dir===1?'end':'start');// R32 mid of feeders, R16 +25% sec, R8 +15% sec
       const w=bWin(matches[ri][i/2]);
+      const wb=ri>=1?bWin(matches[ri-1][i+1]):null;// lower feeder's winner = the chip that sits below this number
+      bTxt(x-dir*11,(prev[i]+prev[i+1])/2+(wb?[0,-0.2,-0.1][ri]:0)*(prev[i+1]-prev[i]),'#'+matches[ri][i/2],13,bTC,dir===1?'end':'start');// centered; nudged up only when the lower feeder's chip is present below it
       if(w)bChip(x+dir*bLL/2,m-16,w,43.12,15.75);
     }
     x+=dir*bLL;return nxt;
